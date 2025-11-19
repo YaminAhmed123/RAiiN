@@ -1,1 +1,3 @@
 lib/*
+!lib/vulkan-1.lib
+!lib/glfw3_mt.lib
