@@ -9,7 +9,7 @@ After you have done this you can clone the repo by doing this:
 ```powershell
 git clone https://github.com/YaminAhmed123/HATE.git
 ```
-Now you can continus with building
+Now you can continue with building
 
 ```powershell
 cd HATE
