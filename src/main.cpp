@@ -7,6 +7,8 @@
 #include <cstring>
 #include <cstdlib>
 
+#include <tools.hpp>
+
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
 

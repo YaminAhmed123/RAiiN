@@ -14,7 +14,7 @@ compiler_args = ['/arch:AVX512', '/Oi', '/Ot', '/MT']
 add_project_arguments(compiler_args, language: 'cpp')
 
 # Include dirs
-incdir = include_directories('include')
+incdir = include_directories('include', 'Engine/tools')
 
 # Dependencies
 # All deps are defined here under this comment only if the need linkage
