@@ -235,6 +235,13 @@ private:
 };
 
 int main() {
+    tools::GenericArray<1,10,1,int> testArray;
+    testArray.array[0] = 3;
+    testArray.addElement(5);
+    testArray.addElement(10);
+    for(int i = 0; i < testArray.getSize(); ++i){
+        std::cout << "Element " << i << ": " << testArray.getPointer()[i] << std::endl;
+    }
     HelloTriangleApplication app;
 
     try {
