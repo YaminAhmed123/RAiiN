@@ -13,12 +13,13 @@
 // P = preAllocation Size
 // S = size
 // T = type
-template<int P,int S,typename T>
+// K = increment size if currentCapacity is reached
+template<int K,int P,int S,typename T>
 class GenericArray
 {
     private:
     int size = 0;
-    const uint32_t currentCapacity;
+    int currentCapacity;
     public:
     T* array;
 
@@ -49,6 +50,16 @@ class GenericArray
         if(size < currentCapacity){
             ++size;
             array[size-1] = element;
+        } else{
+            T* newArray = new T[currentCapacity + K];
+            for(int i = 0; i < size; ++i){
+                newArray[i] = array[i];
+            }
+            newArray[size] = element;
+            ++size;
+            currentCapacity += K;
+            delete[] array;
+            array = newArray;
         }
     }
 };
