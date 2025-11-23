@@ -53,6 +53,9 @@ private:
     VkInstance instance;
     VkDebugUtilsMessengerEXT debugMessenger;
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+    std::vector<VkQueueFamilyProperties> queueFamilies;
+    uint32_t queueFamilyIndex = -1;
+    VkDevice device;
 
     void initWindow() {
         glfwInit();
@@ -67,6 +70,7 @@ private:
         createInstance();
         setupDebugMessenger();
         pickPhysicalDevice();
+        createLogicalDevice();
     }
 
     void mainLoop() {
@@ -126,27 +130,31 @@ private:
         }
     }
 
+    // WARNING this will blow up once you run the engine on a computer without a discrete GPU
     bool isPhysicalDeviceSuitable(VkPhysicalDevice device){
         VkPhysicalDeviceProperties deviceProperties;
-        VkPhysicalDeviceFeatures deviceFeatures;
-        VkPhysicalDeviceMemoryProperties deviceMemory;
         vkGetPhysicalDeviceProperties(device, &deviceProperties);
-        vkGetPhysicalDeviceFeatures(device, &deviceFeatures);
-        vkGetPhysicalDeviceMemoryProperties(device, &deviceMemory);
-
-        // Print device stats to Terminal
-        std::cout << "Physical device stats: " << "\n";
         if(deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU){
-            std::cout << "discrete GPU\n";
-        }
-        if(deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU){
-            std::cout << "integrated GPU\n";
-        }
-        std::cout << deviceProperties.deviceName << "\n";
-        std::cout << "Driver Version: " << deviceProperties.driverVersion << "\n";
-        std::cout << "API up to Version: " << deviceProperties.apiVersion << "\n";
+            return true;
+            uint32_t queueFamilyCount = 0;
+            vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
+            std::vector<VkQueueFamilyProperties> queueFamilys(queueFamilyCount);
+            vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilys.data());
+            queueFamilies = queueFamilys;
 
-        return true;
+            int i = 0;
+            for(VkQueueFamilyProperties queueFamily : queueFamilies){
+                ++i;
+            }
+            queueFamilyIndex = i;
+
+            for(VkQueueFamilyProperties queueFamily : queueFamilies){
+                if(queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     void pickPhysicalDevice(){
@@ -165,8 +173,19 @@ private:
             }
         }
         if (physicalDevice == VK_NULL_HANDLE) {
-            throw std::runtime_error("failed to find a suitable GPU!");
+            throw std::runtime_error("failed to find a suitable GPU! or You don't have a discrete GPU");
         }
+    }
+
+    void createLogicalDevice() {
+        VkDeviceQueueCreateInfo queueCreateInfo{};
+        queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+        queueCreateInfo.queueFamilyIndex = queueFamilyIndex;
+        queueCreateInfo.queueCount = 1;
+        float queuePriority = 1.0f;
+        queueCreateInfo.pQueuePriorities = &queuePriority;
+
+        
     }
 
     void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo) {
@@ -235,13 +254,6 @@ private:
 };
 
 int main() {
-    tools::GenericArray<1,10,1,int> testArray;
-    testArray.array[0] = 3;
-    testArray.addElement(5);
-    testArray.addElement(10);
-    for(int i = 0; i < testArray.getSize(); ++i){
-        std::cout << "Element " << i << ": " << testArray.getPointer()[i] << std::endl;
-    }
     HelloTriangleApplication app;
 
     try {
