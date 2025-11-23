@@ -58,6 +58,7 @@ private:
     GLFWwindow* window;
 
     VkInstance instance;
+    VkQueue graphicsQueue;
     VkDebugUtilsMessengerEXT debugMessenger;
     VkDevice device;
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
@@ -89,7 +90,9 @@ private:
             DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
         }
 
+        vkDestroyDevice(device, nullptr);
         vkDestroyInstance(instance, nullptr);
+        
 
         glfwDestroyWindow(window);
 
@@ -209,10 +212,10 @@ private:
     }
 
     void createLogicalDevice(){
-        QueueFamilyIndices indecies = findQueueFamilies(physicalDevice);
+        QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
         VkDeviceQueueCreateInfo queueCreateInfo{};
         queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-        queueCreateInfo.queueFamilyIndex = indecies.graphicsFamily.value();
+        queueCreateInfo.queueFamilyIndex = indices.graphicsFamily.value();
         queueCreateInfo.queueCount = 1;
 
         float queuePriority = 1.0f;
@@ -226,6 +229,20 @@ private:
         createInfo.pQueueCreateInfos = &queueCreateInfo;
         createInfo.queueCreateInfoCount = 1;
         createInfo.pEnabledFeatures = &deviceFeatures;
+        createInfo.enabledExtensionCount = 0;
+
+        if (enableValidationLayers) {
+            createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+            createInfo.ppEnabledLayerNames = validationLayers.data();
+        } else {
+            createInfo.enabledLayerCount = 0;
+        }    
+
+        if(vkCreateDevice(physicalDevice, &createInfo, nullptr, &device) != VK_SUCCESS){
+            throw std::runtime_error("failed to create a logical Device!");
+        } else{
+            vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
+        }
     }
 
     std::vector<const char*> getRequiredExtensions() {
