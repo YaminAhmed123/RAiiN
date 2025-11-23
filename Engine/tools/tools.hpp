@@ -1,9 +1,9 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 
-/*
-* This header defines a set of functions that can be used for easy development
+/* 
 * Copyright (c) 2025 CortexR7
+* This header defines a set of functions that can be used for easy development
 */
 
 namespace tools{
