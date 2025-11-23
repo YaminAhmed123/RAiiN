@@ -6,8 +6,7 @@
 #include <vector>
 #include <cstring>
 #include <cstdlib>
-
-#include <tools.hpp>
+#include <optional>
 
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
@@ -38,6 +37,14 @@ void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT
     }
 }
 
+struct QueueFamilyIndices {
+    std::optional<uint32_t> graphicsFamily;
+
+    bool isComplete() {
+        return graphicsFamily.has_value();
+    }
+};
+
 class HelloTriangleApplication {
 public:
     void run() {
@@ -52,10 +59,8 @@ private:
 
     VkInstance instance;
     VkDebugUtilsMessengerEXT debugMessenger;
-    VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
-    std::vector<VkQueueFamilyProperties> queueFamilies;
-    uint32_t queueFamilyIndex = -1;
     VkDevice device;
+    VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
 
     void initWindow() {
         glfwInit();
@@ -130,64 +135,6 @@ private:
         }
     }
 
-    // WARNING this will blow up once you run the engine on a computer without a discrete GPU
-    bool isPhysicalDeviceSuitable(VkPhysicalDevice device){
-        VkPhysicalDeviceProperties deviceProperties;
-        vkGetPhysicalDeviceProperties(device, &deviceProperties);
-        if(deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU){
-            return true;
-            uint32_t queueFamilyCount = 0;
-            vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
-            std::vector<VkQueueFamilyProperties> queueFamilys(queueFamilyCount);
-            vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilys.data());
-            queueFamilies = queueFamilys;
-
-            int i = 0;
-            for(VkQueueFamilyProperties queueFamily : queueFamilies){
-                ++i;
-            }
-            queueFamilyIndex = i;
-
-            for(VkQueueFamilyProperties queueFamily : queueFamilies){
-                if(queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    void pickPhysicalDevice(){
-        uint32_t deviceCount = 0;
-        vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
-        if (deviceCount == 0) {
-            throw std::runtime_error("No GPUs support Vulkan !");
-        }
-        std::vector<VkPhysicalDevice> devices(deviceCount);
-        vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
-
-        for(VkPhysicalDevice device : devices){
-            if(isPhysicalDeviceSuitable(device)){
-                physicalDevice = device;
-                //break;            implemenatation will come later one time
-            }
-        }
-        if (physicalDevice == VK_NULL_HANDLE) {
-            throw std::runtime_error("failed to find a suitable GPU! or You don't have a discrete GPU");
-        }
-    }
-
-    void createLogicalDevice() {
-        VkDeviceQueueCreateInfo queueCreateInfo{};
-        queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-        queueCreateInfo.queueFamilyIndex = queueFamilyIndex;
-        queueCreateInfo.queueCount = 1;
-        float queuePriority = 1.0f;
-        queueCreateInfo.pQueuePriorities = &queuePriority;
-
-        
-    }
-
     void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo) {
         createInfo = {};
         createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
@@ -205,6 +152,80 @@ private:
         if (CreateDebugUtilsMessengerEXT(instance, &createInfo, nullptr, &debugMessenger) != VK_SUCCESS) {
             throw std::runtime_error("failed to set up debug messenger!");
         }
+    }
+
+    void pickPhysicalDevice() {
+        uint32_t deviceCount = 0;
+        vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
+
+        if (deviceCount == 0) {
+            throw std::runtime_error("failed to find GPUs with Vulkan support!");
+        }
+
+        std::vector<VkPhysicalDevice> devices(deviceCount);
+        vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
+
+        for (const auto& device : devices) {
+            if (isDeviceSuitable(device)) {
+                physicalDevice = device;
+                break;
+            }
+        }
+
+        if (physicalDevice == VK_NULL_HANDLE) {
+            throw std::runtime_error("failed to find a suitable GPU!");
+        }
+    }
+
+    bool isDeviceSuitable(VkPhysicalDevice device) {
+        QueueFamilyIndices indices = findQueueFamilies(device);
+
+        return indices.isComplete();
+    }
+
+    QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device) {
+        QueueFamilyIndices indices;
+
+        uint32_t queueFamilyCount = 0;
+        vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
+
+        std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
+        vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilies.data());
+
+        int i = 0;
+        for (const auto& queueFamily : queueFamilies) {
+            if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
+                indices.graphicsFamily = i;
+            }
+
+            if (indices.isComplete()) {
+                break;
+            }
+
+            i++;
+        }
+
+        return indices;
+    }
+
+    void createLogicalDevice(){
+        QueueFamilyIndices indecies = findQueueFamilies(physicalDevice);
+        VkDeviceQueueCreateInfo queueCreateInfo{};
+        queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+        queueCreateInfo.queueFamilyIndex = indecies.graphicsFamily.value();
+        queueCreateInfo.queueCount = 1;
+
+        float queuePriority = 1.0f;
+        queueCreateInfo.pQueuePriorities = &queuePriority;
+
+        // empoty device features for now
+        VkPhysicalDeviceFeatures deviceFeatures{};
+
+        VkDeviceCreateInfo createInfo{};
+        createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+        createInfo.pQueueCreateInfos = &queueCreateInfo;
+        createInfo.queueCreateInfoCount = 1;
+        createInfo.pEnabledFeatures = &deviceFeatures;
     }
 
     std::vector<const char*> getRequiredExtensions() {

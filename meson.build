@@ -6,6 +6,7 @@ project(
   default_options : [
     'warning_level=3',
     'buildtype=release',  # release build
+    'cpp_std=vc++20',
   ],
 )
 
