@@ -3,6 +3,7 @@
 
 /*
 * Copyright (c) 2025 CortexR7
+*
 * This header defines a set of functions to aid in Vulkan development
 * the functions that are in the raii namspace are based on RAII principles
 * for all other functions it is advised to be dealt with care.

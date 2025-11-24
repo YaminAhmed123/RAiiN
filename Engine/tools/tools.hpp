@@ -3,7 +3,9 @@
 
 /* 
 * Copyright (c) 2025 CortexR7
+*
 * This header defines a set of functions that can be used for easy development
+* functions that are rather OS specific might fall under a custom namespace that might be added later on.
 */
 
 namespace tools{

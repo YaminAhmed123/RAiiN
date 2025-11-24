@@ -12,6 +12,17 @@
 #include <optional>
 #include <vulkanaid.hpp>
 
+
+/* 
+* Copyright (c) 2025 CortexR7
+*
+* This is the actual implemenatation the "engine" right now.
+* Please do taker into account that this engine is still in alpha stage and is under heavy development
+* It will probably take severel month until it is good for any use.
+*/
+
+
+
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
 
