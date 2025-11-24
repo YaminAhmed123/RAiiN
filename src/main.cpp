@@ -7,6 +7,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <optional>
+#include <vulkanaid.hpp>
 
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
