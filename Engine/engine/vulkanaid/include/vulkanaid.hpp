@@ -19,7 +19,7 @@
 
 namespace vulkanaid{
 
-    inline bool DEBUG_MODE= true; // define if Vulkan should use Validation Layers or not
+    inline bool DEBUG_MODE = true; // SET THIS TRUE OR FALSE WILL HAVE EFFECT ON ALL SYSTEMS THAT INCLUDE vulkanaid.hpp
 
     namespace raii{
         // RAII classes and functions to help with Vulkan resource management will go here
