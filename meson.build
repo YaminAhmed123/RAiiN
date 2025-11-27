@@ -16,7 +16,7 @@ compiler_args = ['/arch:AVX512', '/Oi', '/Ot']
 add_project_arguments(compiler_args, language: 'cpp')
 
 # Include dirs
-incdir = include_directories('include', 'Engine/tools', 'Engine/engine/vulkanaid/include')
+incdir = include_directories('include', 'Engine/tools', 'Engine/engine/vulkanaid/include', 'Engine/engine/render_engine/include')
 
 # Dependencies
 glfw_dep = declare_dependency(
@@ -33,9 +33,10 @@ dependencies = [glfw_dep, vulkan_dep]
 
 # Sources
 sources = [
-  'src/main.cpp',
+  'src/main2.cpp',
   'Engine/engine/vulkanaid/src/vulkanaid.cpp',
   'Engine/engine/vulkanaid/src/vulkanaidraii.cpp',
+  'Engine/engine/render_engine/src/render_engine.cpp',
 ]
 
 # Executable
