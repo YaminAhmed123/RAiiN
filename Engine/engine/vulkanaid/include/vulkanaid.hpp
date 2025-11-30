@@ -11,7 +11,7 @@
     #include <GLFW/glfw3native.h>
 #elif __linux__
     #define GLFW_INCLUDE_VULKAN
-    #define VK_USE_PLATFORM_XCB_KHR
+    #define VK_USE_PLATFORM_WAYLAND_KHR
     #define GLFW_EXPOSE_NATIVE_X11
     #include <GLFW/glfw3native.h>
 #endif
