@@ -1,13 +1,21 @@
-#ifndef VULKANAID_H
-#define VULKANAID_H
+#ifndef VULKANAID_HPP
+#define VULKANAID_HPP
 
 #include <vulkan/vulkan.h>
-#define VK_USE_PLATFORM_WIN32_KHR
-#define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
-#define GLFW_EXPOSE_NATIVE_WIN32
-#include <GLFW/glfw3native.h>
-#include <vulkanaid.hpp>
+
+#ifdef _WIN32
+    #define GLFW_INCLUDE_VULKAN
+    #define VK_USE_PLATFORM_WIN32_KHR
+    #define GLFW_EXPOSE_NATIVE_WIN32
+    #include <GLFW/glfw3native.h>
+#elif __linux__
+    #define GLFW_INCLUDE_VULKAN
+    #define VK_USE_PLATFORM_XCB_KHR
+    #define GLFW_EXPOSE_NATIVE_X11
+    #include <GLFW/glfw3native.h>
+#endif
+
 
 /*
 * Copyright (c) 2025 CortexR7

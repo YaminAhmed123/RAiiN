@@ -4,30 +4,44 @@ project(
   meson_version : '>= 1.3.0',
   version : '0.1',
   default_options : [
-    'cpp_std=vc++20',
-    'b_vscrt=mt',          # matches /MT
+    'cpp_std=c++20',
     'buildtype=release',
     'warning_level=3',
   ],
 )
 
-# Compiler args
-compiler_args = ['/arch:AVX512', '/Oi', '/Ot']
+# Platform-specific compiler args
+if host_machine.system() == 'windows'
+  compiler_args = ['/arch:AVX512', '/Oi', '/Ot']
+else
+  compiler_args = ['-march=native', '-O3', '-flto']
+endif
+
 add_project_arguments(compiler_args, language: 'cpp')
 
 # Include dirs
-incdir = include_directories('include', 'Engine/tools', 'Engine/engine/vulkanaid/include', 'Engine/engine/render_engine/include')
+incdir = include_directories(
+  'include',
+  'Engine/tools',
+  'Engine/engine/vulkanaid/include',
+  'Engine/engine/render_engine/include'
+)
 
 # Dependencies
-glfw_dep = declare_dependency(
-  include_directories: incdir,
-  link_args: [meson.project_source_root() / 'lib/glfw3_mt.lib']
-)
-
-vulkan_dep = declare_dependency(
-  include_directories: incdir,
-  link_args: [meson.project_source_root() / 'lib/vulkan-1.lib']
-)
+if host_machine.system() == 'windows'
+  glfw_dep = declare_dependency(
+    include_directories: incdir,
+    link_args: [meson.project_source_root() / 'lib/glfw3_mt.lib']
+  )
+  vulkan_dep = declare_dependency(
+    include_directories: incdir,
+    link_args: [meson.project_source_root() / 'lib/vulkan-1.lib']
+  )
+else
+  # On Linux, use pkg-config to find glfw3 and Vulkan
+  glfw_dep = dependency('glfw3', required: true)
+  vulkan_dep = dependency('vulkan', required: true)
+endif
 
 dependencies = [glfw_dep, vulkan_dep]
 

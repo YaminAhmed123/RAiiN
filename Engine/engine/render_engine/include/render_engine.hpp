@@ -1,13 +1,22 @@
 #ifndef RENDER_ENGINE_HPP
 #define RENDER_ENGINE_HPP
 
-
-#define VK_USE_PLATFORM_WIN32_KHR
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
-#define GLFW_EXPOSE_NATIVE_WIN32
-#include <GLFW/glfw3native.h>
 #include <vulkanaid.hpp>
+#include <vulkan/vulkan.h>
+#include <GLFW/glfw3.h>
+
+#ifdef _WIN32
+    #define GLFW_INCLUDE_VULKAN
+    #define VK_USE_PLATFORM_WIN32_KHR
+    #define GLFW_EXPOSE_NATIVE_WIN32
+    #include <GLFW/glfw3native.h>
+#elif __linux__
+    #define GLFW_INCLUDE_VULKAN
+    #define VK_USE_PLATFORM_XCB_KHR
+    #define GLFW_EXPOSE_NATIVE_X11
+    #include <GLFW/glfw3native.h>
+#endif
+
 
 
 /*
