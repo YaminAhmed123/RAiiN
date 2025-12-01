@@ -14,7 +14,7 @@ project(
 if host_machine.system() == 'windows'
   compiler_args = ['/arch:AVX512', '/Oi', '/Ot']
 else
-  compiler_args = ['-march=native', '-O3', '-flto']
+  compiler_args = ['-march=native', '-O3']
 endif
 
 add_project_arguments(compiler_args, language: 'cpp')
