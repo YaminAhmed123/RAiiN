@@ -18,7 +18,7 @@ if meson.get_compiler('cpp').get_id() == 'clang'
   compiler_args = ['-march=native', '-O3', '-Wno-unused-parameter']
 else
   # For GCC
-  compiler_args = ['-march=native', '-O3']
+  compiler_args = ['-march=native', '-O3', '-Wno-unused-parameter']
 endif
 
 add_project_arguments(compiler_args, language: 'cpp')
