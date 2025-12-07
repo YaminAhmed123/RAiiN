@@ -11,14 +11,15 @@ project(
 )
 
 # Platform-specific compiler args
-if host_machine.system() == 'windows'
-  compiler_args = ['/arch:AVX512', '/Oi', '/Ot']
-endif
-if meson.get_compiler('cpp').get_id() == 'clang'
-  compiler_args = ['-march=native', '-O3', '-Wno-unused-parameter']
-else
-  # For GCC
-  compiler_args = ['-march=native', '-O3', '-Wno-unused-parameter']
+compiler_args = []
+cpp = meson.get_compiler('cpp')
+
+if cpp.get_id() == 'msvc'
+  compiler_args += ['/arch:AVX512', '/Oi', '/Ot', '/wd4100', '/wd4189']
+elif cpp.get_id() == 'clang'
+  compiler_args += ['-march=native', '-O3', '-Wno-unused-parameter']
+else # GCC
+  compiler_args += ['-march=native', '-O3', '-Wno-unused-parameter']
 endif
 
 add_project_arguments(compiler_args, language: 'cpp')
