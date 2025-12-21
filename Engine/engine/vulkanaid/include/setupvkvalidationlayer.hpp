@@ -26,9 +26,6 @@ void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT
 
 void setupDebugMessengerValidation(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger);
 
-
-//------------------------WARNING-TEMPORARY-FIX---------------//
 bool validationSupport();
-//------------------------------------------------------------//
 
 #endif
