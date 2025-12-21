@@ -9,4 +9,6 @@
 *  Desc coming soon
 */
 
+void createVkInstance(VkInstance& instance);
+
 #endif

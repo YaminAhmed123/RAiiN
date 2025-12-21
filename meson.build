@@ -55,6 +55,7 @@ sources = [
   'src/main2.cpp',
   'Engine/engine/vulkanaid/src/vulkanaid.cpp',
   'Engine/engine/vulkanaid/src/vulkanaidraii.cpp',
+  'Engine/engine/vulkanaid/src/createvkinstance.cpp',
   'Engine/engine/render_engine/src/render_engine.cpp',
 ]
 
