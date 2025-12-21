@@ -56,6 +56,7 @@ sources = [
   'Engine/engine/vulkanaid/src/vulkanaid.cpp',
   'Engine/engine/vulkanaid/src/vulkanaidraii.cpp',
   'Engine/engine/vulkanaid/src/createvkinstance.cpp',
+  'Engine/engine/vulkanaid/src/setupvkvalidationlayer.cpp',
   'Engine/engine/render_engine/src/render_engine.cpp',
 ]
 
