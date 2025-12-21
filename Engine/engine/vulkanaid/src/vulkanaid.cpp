@@ -1,6 +1,7 @@
 #include <vulkanaid.hpp>
 #include <createvkinstance.hpp>
 #include <setupvkvalidationlayer.hpp>
+#include <createvksurface.hpp>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -66,8 +67,6 @@ static bool isDeviceSuitable(VkPhysicalDevice device, VkSurfaceKHR& surface) {
 
 
 
-
-
 void vulkanaid::createVulkanInstance(VkInstance& instance) {
     createVkInstance(instance);
 }
@@ -77,9 +76,7 @@ void vulkanaid::setupDebugMessenger(VkInstance& instance, VkDebugUtilsMessengerE
 }
 
 void vulkanaid::createSurface(VkInstance& instance, VkSurfaceKHR& surface, GLFWwindow* window) {
-    if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create window surface!");
-    }
+    createvksurface(instance, surface, window);
 }
 
 void vulkanaid::pickPhysicalDevice(VkInstance& instance, VkPhysicalDevice& physicalDevice, VkSurfaceKHR& surface) {
