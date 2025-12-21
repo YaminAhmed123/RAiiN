@@ -75,6 +75,12 @@ void vulkanaid::setupDebugMessenger(VkInstance& instance, VkDebugUtilsMessengerE
     setupDebugMessengerValidation(instance, debugMessenger);
 }
 
+void vulkanaid::destroyDebugMessenger(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger) {
+    if (vulkanaid::DEBUG_MODE) {
+        DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
+    }
+}
+
 void vulkanaid::createSurface(VkInstance& instance, VkSurfaceKHR& surface, GLFWwindow* window) {
     createvksurface(instance, surface, window);
 }
@@ -136,12 +142,3 @@ void vulkanaid::createLogicalDevice(VkPhysicalDevice& physicalDevice, VkDevice& 
         vkGetDeviceQueue(device, indices.presentFamily.value(), 0, &presentQueue);
     }
 }
-
-
-void vulkanaid::destroyDebugMessenger(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger) {
-    if (vulkanaid::DEBUG_MODE) {
-        DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
-    }
-}
-
-

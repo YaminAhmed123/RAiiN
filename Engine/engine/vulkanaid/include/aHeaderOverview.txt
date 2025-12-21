@@ -1,0 +1,2 @@
+If you are planning in using one of the headers you are onlyu supposed to include vulkanaid.hpp
+All of the other headers are used to easiar mantain the backend of the render engine (In this case Vulkan device selection validation layers instance create etc.)
