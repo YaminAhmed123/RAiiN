@@ -2,6 +2,8 @@
 #include <createvkinstance.hpp>
 #include <setupvkvalidationlayer.hpp>
 #include <createvksurface.hpp>
+#include <findqueuefamilyindices.hpp>
+#include <selectvkphysicaldevice.hpp>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -16,96 +18,33 @@
 */
 
 
-struct QueueFamilyIndices {
-    std::optional<uint32_t> graphicsFamily;
-    std::optional<uint32_t> presentFamily;
-
-    bool isComplete() {
-        return graphicsFamily.has_value() && presentFamily.has_value();
-    }
-};
-
-static QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device, VkSurfaceKHR& surface) {
-    QueueFamilyIndices indices;
-
-    uint32_t queueFamilyCount = 0;
-    vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
-
-    std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
-    vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilies.data());
-    int i = 0;
-    for (const auto& queueFamily : queueFamilies) {
-        if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
-            indices.graphicsFamily = i;
-        }
-
-        VkBool32 presentSupport = false;
-        vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupport);
-
-        if (presentSupport){
-            indices.presentFamily = i;
-        }
-
-        if (indices.isComplete()) {
-            break;
-        }
-
-        i++;
-    }
-
-    return indices;
-}
 
 
-
-static bool isDeviceSuitable(VkPhysicalDevice device, VkSurfaceKHR& surface) {
-    QueueFamilyIndices indices = findQueueFamilies(device, surface);
-
-    return indices.isComplete();
-}
-
-
-
-
-void vulkanaid::createVulkanInstance(VkInstance& instance) {
+void vulkanaid::createVulkanInstance(VkInstance& instance) 
+{
     createVkInstance(instance);
 }
 
-void vulkanaid::setupDebugMessenger(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger) {
+void vulkanaid::setupDebugMessenger(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger) 
+{
     setupDebugMessengerValidation(instance, debugMessenger);
 }
 
-void vulkanaid::destroyDebugMessenger(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger) {
+void vulkanaid::destroyDebugMessenger(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger)
+{
     if (vulkanaid::DEBUG_MODE) {
         DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
     }
 }
 
-void vulkanaid::createSurface(VkInstance& instance, VkSurfaceKHR& surface, GLFWwindow* window) {
+void vulkanaid::createSurface(VkInstance& instance, VkSurfaceKHR& surface, GLFWwindow* window) 
+{
     createvksurface(instance, surface, window);
 }
 
-void vulkanaid::pickPhysicalDevice(VkInstance& instance, VkPhysicalDevice& physicalDevice, VkSurfaceKHR& surface) {
-    uint32_t deviceCount = 0;
-    vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
-
-    if (deviceCount == 0) {
-        throw std::runtime_error("failed to find GPUs with Vulkan support!");
-    }
-
-    std::vector<VkPhysicalDevice> devices(deviceCount);
-    vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
-
-    for (const auto& device : devices) {
-        if (isDeviceSuitable(device, surface)) {
-            physicalDevice = device;
-            break;
-        }
-    }
-
-    if (physicalDevice == VK_NULL_HANDLE) {
-        throw std::runtime_error("failed to find a suitable GPU!");
-    }
+void vulkanaid::pickPhysicalDevice(VkInstance& instance, VkPhysicalDevice& physicalDevice, VkSurfaceKHR& surface) 
+{
+    selectvkphysicaldevice(instance, physicalDevice, surface);
 }
 
 void vulkanaid::createLogicalDevice(VkPhysicalDevice& physicalDevice, VkDevice& device, VkQueue& graphicsQueue, VkQueue& presentQueue, VkSurfaceKHR& surface) {

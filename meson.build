@@ -58,6 +58,8 @@ sources = [
   'Engine/engine/vulkanaid/src/createvkinstance.cpp',
   'Engine/engine/vulkanaid/src/setupvkvalidationlayer.cpp',
   'Engine/engine/vulkanaid/src/createvksurface.cpp',
+  'Engine/engine/vulkanaid/src/findqueuefamilyindices.cpp',
+  'Engine/engine/vulkanaid/src/selectvkphysicaldevice.cpp',
   'Engine/engine/render_engine/src/render_engine.cpp',
 ]
 
