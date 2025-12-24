@@ -17,4 +17,11 @@ typedef struct {
     std::vector<VkPresentModeKHR> presentModes;
 } SwapChainSupportDetails;
 
+inline SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device)
+{
+    SwapChainSupportDetails details;
+
+    return details;
+}
+
 #endif
