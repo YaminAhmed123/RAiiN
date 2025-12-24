@@ -10,18 +10,14 @@
 */
 
 
-
 typedef struct {
     VkSurfaceCapabilitiesKHR capabilities;
     std::vector<VkSurfaceFormatKHR> formats;
     std::vector<VkPresentModeKHR> presentModes;
 } SwapChainSupportDetails;
 
-inline SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device)
-{
-    SwapChainSupportDetails details;
 
-    return details;
-}
+SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice& device, VkSurfaceKHR& surface);
+bool isSwapChainSuitable(VkPhysicalDevice& device, VkSurfaceKHR& surface);
 
 #endif

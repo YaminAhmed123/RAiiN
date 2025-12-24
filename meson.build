@@ -61,6 +61,7 @@ sources = [
   'Engine/engine/vulkanaid/src/findqueuefamilyindices.cpp',
   'Engine/engine/vulkanaid/src/selectvkphysicaldevice.cpp',
   'Engine/engine/vulkanaid/src/createvklogicaldevice.cpp',
+  'Engine/engine/vulkanaid/src/setupvkswapchain.cpp',
   'Engine/engine/render_engine/src/render_engine.cpp',
 ]
 

@@ -3,14 +3,14 @@
 #include <iostream>
 #include <optional>
 #include <findqueuefamilyindices.hpp>
-
+#include <setupvkswapchain.hpp>
 
 
 static bool isDeviceSuitable(VkPhysicalDevice device, VkSurfaceKHR& surface)
 {
     QueueFamilyIndices indices = findQueueFamilies(device, surface);
 
-    return indices.isComplete();
+    return indices.isComplete() && isSwapChainSuitable(device, surface);
 }
 
 void selectvkphysicaldevice(VkInstance& instance, VkPhysicalDevice& physicalDevice, VkSurfaceKHR& surface)
