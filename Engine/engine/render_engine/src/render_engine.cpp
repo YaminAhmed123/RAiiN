@@ -12,7 +12,8 @@ RenderEngine::RenderEngine() {}
 RenderEngine::~RenderEngine() {}
 
 // static functions
-static void initVulkanWithEngineContext(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger, VkSurfaceKHR& surface, GLFWwindow* window, VkPhysicalDevice& physicalDevice, VkDevice& device, VkQueue& graphicsQueue, VkQueue& presentQueue) {
+static void initVulkanWithEngineContext(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger, VkSurfaceKHR& surface, GLFWwindow* window, VkPhysicalDevice& physicalDevice, VkDevice& device, VkQueue& graphicsQueue, VkQueue& presentQueue) 
+{
     vulkanaid::createVulkanInstance(instance);
     vulkanaid::setupDebugMessenger(instance, debugMessenger);
     vulkanaid::createSurface(instance, surface, window);
@@ -21,31 +22,36 @@ static void initVulkanWithEngineContext(VkInstance& instance, VkDebugUtilsMessen
 }
 
 // valid implementations
-void RenderEngine::run() {
+void RenderEngine::run() 
+{
     RenderEngine::initWindow();
     RenderEngine::initVulkan();
     RenderEngine::mainLoop();
     RenderEngine::cleanup();
 }
 
-void RenderEngine::initWindow() {
+void RenderEngine::initWindow() 
+{
     glfwInit();
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
     RenderEngine::window = glfwCreateWindow(WIDTH, HEIGHT, "HATE ENGINE", nullptr, nullptr);
 }
 
-void RenderEngine::initVulkan() {
+void RenderEngine::initVulkan() 
+{
     initVulkanWithEngineContext(RenderEngine::instance, RenderEngine::debugMessenger, RenderEngine::surface, RenderEngine::window, RenderEngine::physicalDevice, RenderEngine::device, RenderEngine::graphicsQueue, RenderEngine::presentQueue);
 }
 
-void RenderEngine::mainLoop() {
+void RenderEngine::mainLoop() 
+{
     while (!glfwWindowShouldClose(RenderEngine::window)) {
         glfwPollEvents();
     }
 }
 
-void RenderEngine::cleanup() {
+void RenderEngine::cleanup() 
+{
     if (vulkanaid::DEBUG_MODE) {
         vulkanaid::destroyDebugMessenger(RenderEngine::instance, RenderEngine::debugMessenger);
     }
