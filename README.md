@@ -6,7 +6,7 @@
 ## How to compile ? ![GCC](https://img.shields.io/badge/GCC-GNU-red)  ![Clang](https://img.shields.io/badge/Clang-LLVM-blue)  ![MSVC](https://img.shields.io/badge/MSVC-Visual%20Studio-0078D7)   ![Meson](https://img.shields.io/badge/Meson-Build%20System-339999)
 
 
-
+WARNING THIS SCETION STLL LACKS A LOT OF INFORMATION!
 In order to compile the engine from source you must have [Meson](https://mesonbuild.com/) installed on your system.
 After you have done this you can clone the repo by doing this:
 ```powershell
