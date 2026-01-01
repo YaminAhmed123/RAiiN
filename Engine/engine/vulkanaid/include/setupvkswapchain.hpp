@@ -19,5 +19,8 @@ typedef struct {
 
 SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice& device, VkSurfaceKHR& surface);
 bool isSwapChainSuitable(VkPhysicalDevice& device, VkSurfaceKHR& surface);
+VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
+VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
+
 
 #endif

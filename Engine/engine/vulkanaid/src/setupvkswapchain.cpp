@@ -31,3 +31,30 @@ bool isSwapChainSuitable(VkPhysicalDevice& device, VkSurfaceKHR& surface)
     SwapChainSupportDetails swap_chain_support_details = querySwapChainSupport(device, surface);
     return (!swap_chain_support_details.formats.empty() && !swap_chain_support_details.presentModes.empty());
 }
+
+VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats) 
+{
+    for(auto& availableFormat : availableFormats)
+    {
+        if(availableFormat.format == VK_FORMAT_B8G8R8A8_SRGB && availableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR)
+        {
+            return availableFormat;
+        }
+    }
+    //---------------WARNING---------------//
+    //Please consider adding a better err 
+    //handling !
+    return availableFormats[0];
+}
+
+VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes) 
+{
+    for(auto& availablePresentMode : availablePresentModes)
+    {
+        if(availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR)
+        {
+            return availablePresentMode;
+        }
+    }
+    return VK_PRESENT_MODE_FIFO_KHR;
+}
