@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vulkanaid.hpp>
 #include <setupvkvalidationlayer.hpp>
-
+#include <extensions.hpp>
 
 void createvklogicaldevice(VkPhysicalDevice& physicalDevice, VkDevice& device, VkQueue& graphicsQueue, VkQueue& presentQueue, VkSurfaceKHR& surface)
 {
@@ -23,7 +23,8 @@ void createvklogicaldevice(VkPhysicalDevice& physicalDevice, VkDevice& device, V
     createInfo.pQueueCreateInfos = &queueCreateInfo;
     createInfo.queueCreateInfoCount = 1;
     createInfo.pEnabledFeatures = &deviceFeatures;
-    createInfo.enabledExtensionCount = 0;
+    createInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
+    createInfo.ppEnabledExtensionNames = deviceExtensions.data();
 
     if (vulkanaid::DEBUG_MODE) {
         createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());

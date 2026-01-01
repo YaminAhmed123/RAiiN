@@ -33,7 +33,8 @@ void vulkanaid::setupDebugMessenger(VkInstance& instance, VkDebugUtilsMessengerE
 
 void vulkanaid::destroyDebugMessenger(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger)
 {
-    if (vulkanaid::DEBUG_MODE) {
+    if (vulkanaid::DEBUG_MODE) 
+    {
         DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
     }
 }
