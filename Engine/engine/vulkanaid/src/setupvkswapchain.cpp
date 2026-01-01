@@ -1,4 +1,9 @@
 #include <setupvkswapchain.hpp>
+#include <limits>
+#include <GLFW/glfw3.h>
+#include <render_engine.hpp>
+#include <algorithm>
+
 
 SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice& device, VkSurfaceKHR& surface)
 {
@@ -57,4 +62,22 @@ VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& avai
         }
     }
     return VK_PRESENT_MODE_FIFO_KHR;
+}
+
+VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities) 
+{
+    if(capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max())
+    {
+        return capabilities.currentExtent;
+    }
+
+    int width, height;
+    glfwGetFramebufferSize(nullptr, &width, &height);       // This nullptr in the param must be re placed with a valid "GLFWwindow* window" else
+                                                            // it will blow up and cause some heavy issues please fix this ASAP
+    VkExtent2D actualExtent = {static_cast<uint32_t>(width), static_cast<uint32_t>(height)};
+
+    actualExtent.width = std::clamp(actualExtent.width, capabilities.minImageExtent.width, capabilities.maxImageExtent.width);
+    actualExtent.height = std::clamp(actualExtent.height, capabilities.minImageExtent.height, capabilities.maxImageExtent.height);
+
+    return actualExtent;
 }
