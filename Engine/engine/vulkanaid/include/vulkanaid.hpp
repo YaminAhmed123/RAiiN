@@ -28,6 +28,7 @@ namespace vulkanaid{
     void createSurface(VkInstance& instance, VkSurfaceKHR& surface, GLFWwindow* window);
     void pickPhysicalDevice(VkInstance& instance, VkPhysicalDevice& physicalDevice, VkSurfaceKHR& surface);
     void createLogicalDevice(VkPhysicalDevice& physicalDevice, VkDevice& device, VkQueue& graphicsQueue, VkQueue& presentQueue, VkSurfaceKHR& surface);
+    void createSwapChain(GLFWwindow*& window, VkPhysicalDevice& device, VkDevice& deviceL, VkSurfaceKHR& surface, VkSwapchainKHR& swapChain);
     void destroyDebugMessenger(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger);
 }
 

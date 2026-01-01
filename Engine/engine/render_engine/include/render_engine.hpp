@@ -37,6 +37,7 @@ public:
     VkSurfaceKHR surface;
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
     VkDevice device;
+    VkSwapchainKHR swapChain;
     VkInstance instance{};
     VkDebugUtilsMessengerEXT debugMessenger{};
 

@@ -5,6 +5,7 @@
 #include <findqueuefamilyindices.hpp>
 #include <selectvkphysicaldevice.hpp>
 #include <createvklogicaldevice.hpp>
+#include <setupvkswapchain.hpp>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -50,4 +51,9 @@ void vulkanaid::pickPhysicalDevice(VkInstance& instance, VkPhysicalDevice& physi
 void vulkanaid::createLogicalDevice(VkPhysicalDevice& physicalDevice, VkDevice& device, VkQueue& graphicsQueue, VkQueue& presentQueue, VkSurfaceKHR& surface) 
 {
     createvklogicaldevice(physicalDevice, device, graphicsQueue, presentQueue, surface);
+}
+
+void vulkanaid::createSwapChain(GLFWwindow*& window, VkPhysicalDevice& device, VkDevice& deviceL, VkSurfaceKHR& surface, VkSwapchainKHR& swapChain)
+{
+    createVkSwapChain(window, device, deviceL, surface, swapChain);
 }

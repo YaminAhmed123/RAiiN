@@ -1,5 +1,6 @@
 #ifndef SETUPVKSWAPCHAIN_HPP
 #define SETUPVKSWAPCHAIN_HPP
+#include <GLFW/glfw3.h>
 #include <vulkan/vulkan.h>
 #include <vector>
 
@@ -21,7 +22,8 @@ SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice& device, VkSurfac
 bool isSwapChainSuitable(VkPhysicalDevice& device, VkSurfaceKHR& surface);
 VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
 VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
-VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+VkExtent2D chooseSwapExtent(GLFWwindow*& window, const VkSurfaceCapabilitiesKHR& capabilities);
+void createVkSwapChain(GLFWwindow*& window, VkPhysicalDevice& device, VkDevice& deviceL, VkSurfaceKHR& surface, VkSwapchainKHR& swapChain);
 
 
 #endif

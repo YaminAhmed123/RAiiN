@@ -12,13 +12,14 @@ RenderEngine::RenderEngine() {}
 RenderEngine::~RenderEngine() {}
 
 // static functions
-static void initVulkanWithEngineContext(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger, VkSurfaceKHR& surface, GLFWwindow* window, VkPhysicalDevice& physicalDevice, VkDevice& device, VkQueue& graphicsQueue, VkQueue& presentQueue) 
+static void initVulkanWithEngineContext(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger, VkSurfaceKHR& surface, GLFWwindow* window, VkPhysicalDevice& physicalDevice, VkDevice& device, VkQueue& graphicsQueue, VkQueue& presentQueue, VkSwapchainKHR swapChain) 
 {
     vulkanaid::createVulkanInstance(instance);
     vulkanaid::setupDebugMessenger(instance, debugMessenger);
     vulkanaid::createSurface(instance, surface, window);
     vulkanaid::pickPhysicalDevice(instance, physicalDevice, surface);
     vulkanaid::createLogicalDevice(physicalDevice, device, graphicsQueue, presentQueue, surface);
+    vulkanaid::createSwapChain(window, physicalDevice, device, surface, swapChain);
 }
 
 // valid implementations
@@ -40,7 +41,7 @@ void RenderEngine::initWindow()
 
 void RenderEngine::initVulkan() 
 {
-    initVulkanWithEngineContext(RenderEngine::instance, RenderEngine::debugMessenger, RenderEngine::surface, RenderEngine::window, RenderEngine::physicalDevice, RenderEngine::device, RenderEngine::graphicsQueue, RenderEngine::presentQueue);
+    initVulkanWithEngineContext(RenderEngine::instance, RenderEngine::debugMessenger, RenderEngine::surface, RenderEngine::window, RenderEngine::physicalDevice, RenderEngine::device, RenderEngine::graphicsQueue, RenderEngine::presentQueue, RenderEngine::swapChain);
 }
 
 void RenderEngine::mainLoop() 
@@ -56,6 +57,7 @@ void RenderEngine::cleanup()
         vulkanaid::destroyDebugMessenger(RenderEngine::instance, RenderEngine::debugMessenger);
     }
 
+    vkDestroySwapchainKHR(RenderEngine::device, RenderEngine::swapChain, nullptr);
     vkDestroyDevice(RenderEngine::device, nullptr);
     vkDestroySurfaceKHR(RenderEngine::instance, RenderEngine::surface, nullptr);
     vkDestroyInstance(RenderEngine::instance, nullptr);
