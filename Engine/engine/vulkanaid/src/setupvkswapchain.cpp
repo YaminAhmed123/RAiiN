@@ -6,6 +6,15 @@
 #include <findqueuefamilyindices.hpp>
 #include <iostream>
 
+// This is needed since max and min are macros that comes with windows.h
+// These override the std::max and std::min functions from <algorithm>
+// and then cause compilation errors
+#ifdef _WIN32
+#undef max
+#undef min
+#endif
+
+
 SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice& device, VkSurfaceKHR& surface)
 {
     SwapChainSupportDetails details;
