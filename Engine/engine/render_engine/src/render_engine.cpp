@@ -12,7 +12,7 @@ RenderEngine::RenderEngine() {}
 RenderEngine::~RenderEngine() {}
 
 // static functions
-static void initVulkanWithEngineContext(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger, VkSurfaceKHR& surface, GLFWwindow* window, VkPhysicalDevice& physicalDevice, VkDevice& device, VkQueue& graphicsQueue, VkQueue& presentQueue, VkSwapchainKHR& swapChain) 
+static void initVulkanWithEngineContext(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger, VkSurfaceKHR& surface, GLFWwindow* window, VkPhysicalDevice& physicalDevice, VkDevice& device, VkQueue& graphicsQueue, VkQueue& presentQueue, VkSwapchainKHR& swapChain, std::vector<VkImage>& swapChainImages) 
 {
     vulkanaid::createVulkanInstance(instance);
     vulkanaid::setupDebugMessenger(instance, debugMessenger);
@@ -20,6 +20,7 @@ static void initVulkanWithEngineContext(VkInstance& instance, VkDebugUtilsMessen
     vulkanaid::pickPhysicalDevice(instance, physicalDevice, surface);
     vulkanaid::createLogicalDevice(physicalDevice, device, graphicsQueue, presentQueue, surface);
     vulkanaid::createSwapChain(window, physicalDevice, device, surface, swapChain);
+    vulkanaid::getSwapChainImages(device, swapChain, swapChainImages);
 }
 
 // valid implementations
@@ -41,12 +42,13 @@ void RenderEngine::initWindow()
 
 void RenderEngine::initVulkan() 
 {
-    initVulkanWithEngineContext(RenderEngine::instance, RenderEngine::debugMessenger, RenderEngine::surface, RenderEngine::window, RenderEngine::physicalDevice, RenderEngine::device, RenderEngine::graphicsQueue, RenderEngine::presentQueue, RenderEngine::swapChain);
+    initVulkanWithEngineContext(RenderEngine::instance, RenderEngine::debugMessenger, RenderEngine::surface, RenderEngine::window, RenderEngine::physicalDevice, RenderEngine::device, RenderEngine::graphicsQueue, RenderEngine::presentQueue, RenderEngine::swapChain, RenderEngine::swapChainImages);
 }
 
 void RenderEngine::mainLoop() 
 {
-    while (!glfwWindowShouldClose(RenderEngine::window)) {
+    while (!glfwWindowShouldClose(RenderEngine::window)) 
+    {
         glfwPollEvents();
     }
 }

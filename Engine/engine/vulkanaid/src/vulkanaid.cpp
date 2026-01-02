@@ -58,3 +58,12 @@ void vulkanaid::createSwapChain(GLFWwindow*& window, VkPhysicalDevice& device, V
 {
     createVkSwapChain(window, device, deviceL, surface, swapChain);
 }
+
+void vulkanaid::getSwapChainImages(VkDevice& device, VkSwapchainKHR& swapChain, std::vector<VkImage>& swapChainImages)
+{
+    uint32_t imageCount;
+
+    vkGetSwapchainImagesKHR(device, swapChain, &imageCount, nullptr);
+    swapChainImages.resize(imageCount);
+    vkGetSwapchainImagesKHR(device, swapChain, &imageCount, swapChainImages.data());
+}

@@ -4,6 +4,7 @@
 #include <vulkanaid.hpp>
 #include <vulkan/vulkan.h>
 #include <GLFW/glfw3.h>
+#include <vector>
 
 #ifdef _WIN32
     #define GLFW_INCLUDE_VULKAN
@@ -38,6 +39,7 @@ public:
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
     VkDevice device;
     VkSwapchainKHR swapChain;
+    std::vector<VkImage> swapChainImages;
     VkInstance instance{};
     VkDebugUtilsMessengerEXT debugMessenger{};
 

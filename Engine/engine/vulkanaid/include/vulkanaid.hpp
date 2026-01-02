@@ -3,6 +3,7 @@
 
 #include <vulkan/vulkan.h>
 #include <GLFW/glfw3.h>
+#include <vector>
 
 
 
@@ -29,6 +30,7 @@ namespace vulkanaid{
     void pickPhysicalDevice(VkInstance& instance, VkPhysicalDevice& physicalDevice, VkSurfaceKHR& surface);
     void createLogicalDevice(VkPhysicalDevice& physicalDevice, VkDevice& device, VkQueue& graphicsQueue, VkQueue& presentQueue, VkSurfaceKHR& surface);
     void createSwapChain(GLFWwindow*& window, VkPhysicalDevice& device, VkDevice& deviceL, VkSurfaceKHR& surface, VkSwapchainKHR& swapChain);
+    void getSwapChainImages(VkDevice& device, VkSwapchainKHR& swapChain, std::vector<VkImage>& swapChainImages);
     void destroyDebugMessenger(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger);
 }
 
