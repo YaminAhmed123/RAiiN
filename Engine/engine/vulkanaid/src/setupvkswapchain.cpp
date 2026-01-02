@@ -130,7 +130,7 @@ void createVkSwapChain(GLFWwindow*& window, VkPhysicalDevice& device, VkDevice& 
     }
 
     createInfo.preTransform = swapChainSupport.capabilities.currentTransform;
-    createInfo.compositeAlpha = VK_COMPOSITE_ALPHA_PRE_MULTIPLIED_BIT_KHR; // set this to opaque with this flag "VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR"
+    createInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR; // set this to opaque with this flag "VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR"
     createInfo.presentMode = presentMode;
     createInfo.clipped = VK_TRUE;
     createInfo.oldSwapchain = VK_NULL_HANDLE;
