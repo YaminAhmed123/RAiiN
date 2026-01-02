@@ -12,7 +12,7 @@ RenderEngine::RenderEngine() {}
 RenderEngine::~RenderEngine() {}
 
 // static functions
-static void initVulkanWithEngineContext(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger, VkSurfaceKHR& surface, GLFWwindow* window, VkPhysicalDevice& physicalDevice, VkDevice& device, VkQueue& graphicsQueue, VkQueue& presentQueue, VkSwapchainKHR swapChain) 
+static void initVulkanWithEngineContext(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger, VkSurfaceKHR& surface, GLFWwindow* window, VkPhysicalDevice& physicalDevice, VkDevice& device, VkQueue& graphicsQueue, VkQueue& presentQueue, VkSwapchainKHR& swapChain) 
 {
     vulkanaid::createVulkanInstance(instance);
     vulkanaid::setupDebugMessenger(instance, debugMessenger);
