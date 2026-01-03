@@ -1,4 +1,5 @@
 # HATE Engine  ![Vulkan](https://img.shields.io/badge/Vulkan-API-orange?logo=vulkan&style=flat-square)
+# Alpha stage ! Learning project !
 ## Features
 - This a really simple game engine to build 3D games.
 - Additinal info coming soon.
