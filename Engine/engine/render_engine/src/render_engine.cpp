@@ -1,4 +1,7 @@
 #include <render_engine.hpp>
+#include <iostream>
+#include <fstream>
+#include <string>
 
 /*
 * Copyright (c) 2025 CortexR7
@@ -12,7 +15,7 @@ RenderEngine::RenderEngine() {}
 RenderEngine::~RenderEngine() {}
 
 // static functions
-static void initVulkanWithEngineContext(
+static void initVulkanWithEngineMembers(
     VkInstance& instance, 
     VkDebugUtilsMessengerEXT& debugMessenger, 
     VkSurfaceKHR& surface, 
@@ -38,6 +41,46 @@ static void initVulkanWithEngineContext(
     vulkanaid::setSwapChainExtentAndFormat(window, physicalDevice, surface, swapChainExtent, swapChainImageFormat);
     vulkanaid::createSwaapChainImageViews(swapChainImages, swapChainImageViews, swapChainImageFormat, device);
 }
+
+// At this part of the static function we have a set of static function 
+// that are meant to help develop the createGraphicsPipeline function
+static std::vector<char> ShaderLoader(const std::string& filename)
+{
+    std::ifstream file(filename, std::ios::ate | std::ios::binary);
+
+    if (!file.is_open()) 
+    {
+        throw std::runtime_error("failed to open file!");
+    }
+
+    size_t fileSize = (size_t) file.tellg();
+    std::vector<char> buffer(fileSize);
+
+    file.seekg(0);
+    file.read(buffer.data(), fileSize);
+    file.close();
+    
+    return buffer;
+}
+
+static VkShaderModule createShaderModule(const std::vector<char>& shaderCode, VkDevice& device)
+{
+    VkShaderModuleCreateInfo createInfo{};
+    createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+    createInfo.codeSize = shaderCode.size();
+    createInfo.pCode = reinterpret_cast<const uint32_t*>(shaderCode.data());
+
+    VkShaderModule shaderModule;
+    if(vkCreateShaderModule(device, &createInfo, nullptr, &shaderModule) != VK_SUCCESS) 
+    {
+        throw std::runtime_error("failed to create shader module!");
+    }
+
+    return shaderModule; 
+}
+
+// End of static functions meant to help develop in graphics Pipeline
+
 
 static void destroyVkSwapChainImageViewsVector(std::vector<VkImageView>& swapChainImageViews, VkDevice& device)
 {
@@ -66,7 +109,7 @@ void RenderEngine::initWindow()
 
 void RenderEngine::initVulkan() 
 {
-    initVulkanWithEngineContext(
+    initVulkanWithEngineMembers(
         RenderEngine::instance, 
         RenderEngine::debugMessenger, 
         RenderEngine::surface, 
@@ -81,6 +124,7 @@ void RenderEngine::initVulkan()
         RenderEngine::swapChainImageFormat,
         RenderEngine::swapChainExtent
     );
+    RenderEngine::createGraphicsPipeline();
 }
 
 void RenderEngine::mainLoop() 
@@ -105,4 +149,13 @@ void RenderEngine::cleanup()
 
     glfwDestroyWindow(RenderEngine::window);
     glfwTerminate();
+}
+
+void RenderEngine::createGraphicsPipeline()
+{
+    auto vertShaderCode = ShaderLoader("/home/yamin/repos/HATE/SPIR-V/vert.spv");   // absolute path for temporary only
+    auto fragShaderCode = ShaderLoader("/home/yamin/repos/HATE/SPIR-V/frag.spv");   // absolute path for temporary only
+
+    VkShaderModule vertShaderModule = createShaderModule(vertShaderCode, RenderEngine::device);
+    VkShaderModule fragShaderModule = createShaderModule(fragShaderCode, RenderEngine::device);
 }

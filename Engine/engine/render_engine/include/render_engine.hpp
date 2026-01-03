@@ -57,6 +57,7 @@ public:
     void run();
     void initWindow();
     void initVulkan();
+    void createGraphicsPipeline();
     void mainLoop();
     void cleanup();
 };
