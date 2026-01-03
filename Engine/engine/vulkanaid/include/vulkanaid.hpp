@@ -31,6 +31,8 @@ namespace vulkanaid{
     void createLogicalDevice(VkPhysicalDevice& physicalDevice, VkDevice& device, VkQueue& graphicsQueue, VkQueue& presentQueue, VkSurfaceKHR& surface);
     void createSwapChain(GLFWwindow*& window, VkPhysicalDevice& device, VkDevice& deviceL, VkSurfaceKHR& surface, VkSwapchainKHR& swapChain);
     void getSwapChainImages(VkDevice& device, VkSwapchainKHR& swapChain, std::vector<VkImage>& swapChainImages);
+    void setSwapChainExtentAndFormat(GLFWwindow*& window, VkPhysicalDevice& device, VkSurfaceKHR& surface, VkExtent2D& swapChainExtent, VkFormat& format);
+    void createSwaapChainImageViews(std::vector<VkImage>& swapChainImages, std::vector<VkImageView>& swapChainImageViews, VkFormat& swapChainImageFormat, VkDevice& device);
     void destroyDebugMessenger(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger);
 }
 
