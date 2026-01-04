@@ -1,0 +1,5 @@
+# Mark SPIR-V binaries
+*.spv linguist-language=SPIR-V
+
+# Mark GLSL shaders
+*.glsl linguist-language=GLSL
