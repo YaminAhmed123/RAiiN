@@ -63,6 +63,7 @@ sources = [
   'Engine/engine/vulkanaid/src/createvklogicaldevice.cpp',
   'Engine/engine/vulkanaid/src/setupvkswapchain.cpp',
   'Engine/engine/render_engine/src/render_engine.cpp',
+  'Engine/engine/render_engine/src/graphics_pipeline.cpp',
 ]
 
 # Executable
