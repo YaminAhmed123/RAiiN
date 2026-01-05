@@ -45,8 +45,8 @@ static VkShaderModule createShaderModule(const std::vector<char>& shaderCode, Vk
 
 void RenderEngine::createGraphicsPipeline()
 {
-    auto vertShaderCode = ShaderLoader("/home/yamin/repos/HATE/SPIR-V/vert.spv");   // absolute path for temporary use only
-    auto fragShaderCode = ShaderLoader("/home/yamin/repos/HATE/SPIR-V/frag.spv");   // absolute path for temporary use only
+    auto vertShaderCode = ShaderLoader("../SPIR-V/vert.spv");  
+    auto fragShaderCode = ShaderLoader("../SPIR-V/frag.spv"); 
 
     VkShaderModule vertShaderModule = createShaderModule(vertShaderCode, RenderEngine::device);
     VkShaderModule fragShaderModule = createShaderModule(fragShaderCode, RenderEngine::device);
