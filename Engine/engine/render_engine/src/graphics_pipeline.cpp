@@ -152,8 +152,4 @@ void RenderEngine::createGraphicsPipeline()
 
     // Also I will skip depth and stencil testing right now.
     // This will come later
-
-
-    
-
 }
