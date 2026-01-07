@@ -63,6 +63,7 @@ public:
     void initWindow();
     void initVulkan();
     void createGraphicsPipeline();
+    void createRenderpass();
     void mainLoop();
     void cleanup();
 };
