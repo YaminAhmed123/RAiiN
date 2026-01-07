@@ -50,6 +50,11 @@ public:
     VkQueue graphicsQueue;
     VkQueue presentQueue;
 
+    // graphics
+    VkPipelineLayout pipelineLayout;
+    VkShaderModule vertShaderModule;
+    VkShaderModule fragShaderModule;
+
 
 
     RenderEngine();

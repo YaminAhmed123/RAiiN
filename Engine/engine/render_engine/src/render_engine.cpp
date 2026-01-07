@@ -103,6 +103,9 @@ void RenderEngine::cleanup()
         vulkanaid::destroyDebugMessenger(RenderEngine::instance, RenderEngine::debugMessenger);
     }
 
+    vkDestroyShaderModule(device, fragShaderModule, nullptr);
+    vkDestroyShaderModule(device, vertShaderModule, nullptr);
+    vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
     destroyVkSwapChainImageViewsVector(RenderEngine::swapChainImagesViews, RenderEngine::device);
     vkDestroySwapchainKHR(RenderEngine::device, RenderEngine::swapChain, nullptr);
     vkDestroyDevice(RenderEngine::device, nullptr);
