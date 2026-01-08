@@ -86,6 +86,7 @@ void RenderEngine::initVulkan()
         RenderEngine::swapChainImageFormat,
         RenderEngine::swapChainExtent
     );
+    RenderEngine::createRenderpass();
     RenderEngine::createGraphicsPipeline();
 }
 
@@ -99,13 +100,16 @@ void RenderEngine::mainLoop()
 
 void RenderEngine::cleanup() 
 {
-    if (vulkanaid::DEBUG_MODE) {
+    if (vulkanaid::DEBUG_MODE) 
+    {
         vulkanaid::destroyDebugMessenger(RenderEngine::instance, RenderEngine::debugMessenger);
     }
 
-    vkDestroyShaderModule(device, fragShaderModule, nullptr);
-    vkDestroyShaderModule(device, vertShaderModule, nullptr);
-    vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
+    vkDestroyShaderModule(device, RenderEngine::fragShaderModule, nullptr);
+    vkDestroyShaderModule(device, RenderEngine::vertShaderModule, nullptr);
+    vkDestroyPipeline(device, RenderEngine::graphicsPipeline, nullptr);
+    vkDestroyPipelineLayout(device, RenderEngine::pipelineLayout, nullptr);
+    vkDestroyRenderPass(device, RenderEngine::renderPass, nullptr);
     destroyVkSwapChainImageViewsVector(RenderEngine::swapChainImagesViews, RenderEngine::device);
     vkDestroySwapchainKHR(RenderEngine::device, RenderEngine::swapChain, nullptr);
     vkDestroyDevice(RenderEngine::device, nullptr);
