@@ -52,6 +52,14 @@ static void destroyVkSwapChainImageViewsVector(std::vector<VkImageView>& swapCha
     }
 }
 
+static void destroyVkFramebuffersVector(std::vector<VkFramebuffer>& swapChainFramebuffers, VkDevice& device)
+{
+    for(auto framebuffer : swapChainFramebuffers)
+    {
+        vkDestroyFramebuffer(device, framebuffer, nullptr);
+    }
+}
+
 // valid implementations
 void RenderEngine::run() 
 {
@@ -88,6 +96,7 @@ void RenderEngine::initVulkan()
     );
     RenderEngine::createRenderpass();
     RenderEngine::createGraphicsPipeline();
+    RenderEngine::createFramebuffers();
 }
 
 void RenderEngine::mainLoop() 
@@ -109,6 +118,7 @@ void RenderEngine::cleanup()
     vkDestroyShaderModule(device, RenderEngine::vertShaderModule, nullptr);
     vkDestroyPipeline(device, RenderEngine::graphicsPipeline, nullptr);
     vkDestroyPipelineLayout(device, RenderEngine::pipelineLayout, nullptr);
+    destroyVkFramebuffersVector(RenderEngine::swapChainFramebuffers, RenderEngine::device);
     vkDestroyRenderPass(device, RenderEngine::renderPass, nullptr);
     destroyVkSwapChainImageViewsVector(RenderEngine::swapChainImagesViews, RenderEngine::device);
     vkDestroySwapchainKHR(RenderEngine::device, RenderEngine::swapChain, nullptr);

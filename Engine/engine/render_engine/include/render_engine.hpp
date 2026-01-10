@@ -43,6 +43,7 @@ public:
     VkFormat swapChainImageFormat;
     VkExtent2D swapChainExtent;
     std::vector<VkImageView> swapChainImagesViews;
+    std::vector<VkFramebuffer> swapChainFramebuffers;
     VkInstance instance{};
     VkDebugUtilsMessengerEXT debugMessenger{};
 
@@ -66,6 +67,7 @@ public:
     void initVulkan();
     void createGraphicsPipeline();
     void createRenderpass();
+    void createFramebuffers();
     void mainLoop();
     void cleanup();
 };
