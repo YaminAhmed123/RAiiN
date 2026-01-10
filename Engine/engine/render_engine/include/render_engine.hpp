@@ -62,6 +62,11 @@ public:
     VkCommandPool commandPool;
     VkCommandBuffer commandBuffer;
 
+    // sync objects
+    VkSemaphore imageAvailableSemaphore;
+    VkSemaphore renderFinishedSemaphore;
+    VkFence inFlightFence;
+
 
 
     RenderEngine();
@@ -75,6 +80,7 @@ public:
     void createCommandPool();
     void createCommandBuffer();
     void recordCommandBuffer(VkCommandBuffer& commandBuffer, uint32_t imageIndex);
+    void createSyncObjects();
     void drawFrame();
     void mainLoop();
     void cleanup();

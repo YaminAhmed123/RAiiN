@@ -97,6 +97,9 @@ void RenderEngine::initVulkan()
     RenderEngine::createRenderpass();
     RenderEngine::createGraphicsPipeline();
     RenderEngine::createFramebuffers();
+    RenderEngine::createCommandPool();
+    RenderEngine::createCommandBuffer();
+    RenderEngine::createSyncObjects();
 }
 
 void RenderEngine::mainLoop() 
@@ -106,6 +109,7 @@ void RenderEngine::mainLoop()
         glfwPollEvents();
         RenderEngine::drawFrame();
     }
+    vkDeviceWaitIdle(this->device);
 }
 
 void RenderEngine::cleanup() 
@@ -122,6 +126,9 @@ void RenderEngine::cleanup()
     destroyVkFramebuffersVector(RenderEngine::swapChainFramebuffers, RenderEngine::device);
     vkDestroyRenderPass(device, RenderEngine::renderPass, nullptr);
     vkDestroyCommandPool(RenderEngine::device, RenderEngine::commandPool, nullptr);
+    vkDestroySemaphore(device, imageAvailableSemaphore, nullptr);
+    vkDestroySemaphore(device, renderFinishedSemaphore, nullptr);
+    vkDestroyFence(device, inFlightFence, nullptr);
     destroyVkSwapChainImageViewsVector(RenderEngine::swapChainImagesViews, RenderEngine::device);
     vkDestroySwapchainKHR(RenderEngine::device, RenderEngine::swapChain, nullptr);
     vkDestroyDevice(RenderEngine::device, nullptr);

@@ -69,6 +69,7 @@ sources = [
   'Engine/engine/render_engine/src/create_commandpoll.cpp',
   'Engine/engine/render_engine/src/create_commandbuffer.cpp',
   'Engine/engine/render_engine/src/draw_frame.cpp',
+  'Engine/engine/render_engine/src/create_sync_objects.cpp',
 ]
 
 # Executable
