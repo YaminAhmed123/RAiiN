@@ -66,6 +66,9 @@ sources = [
   'Engine/engine/render_engine/src/graphics_pipeline.cpp',
   'Engine/engine/render_engine/src/render_pass.cpp',
   'Engine/engine/render_engine/src/create_framebuffers.cpp',
+  'Engine/engine/render_engine/src/create_commandpoll.cpp',
+  'Engine/engine/render_engine/src/create_commandbuffer.cpp',
+  'Engine/engine/render_engine/src/draw_frame.cpp',
 ]
 
 # Executable

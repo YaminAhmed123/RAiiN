@@ -58,6 +58,10 @@ public:
     VkShaderModule vertShaderModule;
     VkShaderModule fragShaderModule;
 
+    // commnads
+    VkCommandPool commandPool;
+    VkCommandBuffer commandBuffer;
+
 
 
     RenderEngine();
@@ -68,6 +72,10 @@ public:
     void createGraphicsPipeline();
     void createRenderpass();
     void createFramebuffers();
+    void createCommandPool();
+    void createCommandBuffer();
+    void recordCommandBuffer(VkCommandBuffer& commandBuffer, uint32_t imageIndex);
+    void drawFrame();
     void mainLoop();
     void cleanup();
 };

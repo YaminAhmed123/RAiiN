@@ -104,6 +104,7 @@ void RenderEngine::mainLoop()
     while (!glfwWindowShouldClose(RenderEngine::window)) 
     {
         glfwPollEvents();
+        RenderEngine::drawFrame();
     }
 }
 
@@ -120,6 +121,7 @@ void RenderEngine::cleanup()
     vkDestroyPipelineLayout(device, RenderEngine::pipelineLayout, nullptr);
     destroyVkFramebuffersVector(RenderEngine::swapChainFramebuffers, RenderEngine::device);
     vkDestroyRenderPass(device, RenderEngine::renderPass, nullptr);
+    vkDestroyCommandPool(RenderEngine::device, RenderEngine::commandPool, nullptr);
     destroyVkSwapChainImageViewsVector(RenderEngine::swapChainImagesViews, RenderEngine::device);
     vkDestroySwapchainKHR(RenderEngine::device, RenderEngine::swapChain, nullptr);
     vkDestroyDevice(RenderEngine::device, nullptr);
