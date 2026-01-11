@@ -92,7 +92,7 @@ void RenderEngine::createGraphicsPipeline()
     viewport.x = 0.0f;
     viewport.y = 0.0f;
     viewport.width = static_cast<float>(RenderEngine::swapChainExtent.width);
-    viewport.height = static_cast<float>(RenderEngine::swapChainExtent.width);
+    viewport.height = static_cast<float>(RenderEngine::swapChainExtent.height);
     viewport.minDepth = 0.0f;
     viewport.maxDepth = 1.0f;
 
