@@ -99,7 +99,7 @@ void createVkSwapChain(GLFWwindow*& window, VkPhysicalDevice& device, VkDevice& 
     VkPresentModeKHR presentMode = chooseSwapPresentMode(swapChainSupport.presentModes);
     VkExtent2D extent = chooseSwapExtent(window, swapChainSupport.capabilities);
 
-    uint32_t imageCount = swapChainSupport.capabilities.minImageCount + 2;
+    uint32_t imageCount = swapChainSupport.capabilities.minImageCount + 1;  // higher values here probably wont result in more images since the capabilities are usually only up to 3 for tripple buffering.
 
     if(swapChainSupport.capabilities.maxImageCount != 0 && imageCount > swapChainSupport.capabilities.maxImageCount)    // 0 mean there is no maximum Image count !
     {
