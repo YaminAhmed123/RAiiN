@@ -23,6 +23,13 @@ void RenderEngine::recreateSwapChain()
     vkDeviceWaitIdle(this->device);
 
     RenderEngine::cleanUpSwapChain();
+    vulkanaid::setSwapChainExtentAndFormat(
+        this->window,
+        this->physicalDevice,
+        this->surface,
+        this->swapChainExtent,
+        this->swapChainImageFormat
+    );
     vulkanaid::createSwapChain(
         this->window,
         this->physicalDevice,
@@ -41,4 +48,5 @@ void RenderEngine::recreateSwapChain()
         this->swapChainImageFormat,
         this->device
     );
+    RenderEngine::createFramebuffers();
 }
