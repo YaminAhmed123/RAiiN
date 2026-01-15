@@ -125,10 +125,15 @@ void RenderEngine::cleanup()
     vkDestroyPipelineLayout(device, RenderEngine::pipelineLayout, nullptr);
     destroyVkFramebuffersVector(RenderEngine::swapChainFramebuffers, RenderEngine::device);
     vkDestroyRenderPass(device, RenderEngine::renderPass, nullptr);
+
     vkDestroyCommandPool(RenderEngine::device, RenderEngine::commandPool, nullptr);
-    vkDestroySemaphore(device, imageAvailableSemaphore, nullptr);
-    vkDestroySemaphore(device, renderFinishedSemaphore, nullptr);
-    vkDestroyFence(device, inFlightFence, nullptr);
+    for(size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
+    {
+        vkDestroySemaphore(device, imageAvailableSemaphores[i], nullptr);
+        vkDestroySemaphore(device, renderFinishedSemaphores[i], nullptr);
+        vkDestroyFence(device, inFlightFences[i], nullptr);
+    }
+    
     destroyVkSwapChainImageViewsVector(RenderEngine::swapChainImagesViews, RenderEngine::device);
     vkDestroySwapchainKHR(RenderEngine::device, RenderEngine::swapChain, nullptr);
     vkDestroyDevice(RenderEngine::device, nullptr);

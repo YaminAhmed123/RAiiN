@@ -31,6 +31,8 @@ class RenderEngine {
 private:
     const int WIDTH = 800;
     const int HEIGHT = 600;
+    const uint32_t MAX_FRAMES_IN_FLIGHT = 2;
+    int currentFrame = 0;
 
 public:
     GLFWwindow* window;
@@ -60,12 +62,12 @@ public:
 
     // commnads
     VkCommandPool commandPool;
-    VkCommandBuffer commandBuffer;
+    std::vector<VkCommandBuffer> commandBuffers;
 
     // sync objects
-    VkSemaphore imageAvailableSemaphore;
-    VkSemaphore renderFinishedSemaphore;
-    VkFence inFlightFence;
+    std::vector<VkSemaphore> imageAvailableSemaphores;
+    std::vector<VkSemaphore> renderFinishedSemaphores;
+    std::vector<VkFence> inFlightFences;
 
 
 
