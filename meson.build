@@ -29,7 +29,8 @@ incdir = include_directories(
   'include',
   'Engine/tools',
   'Engine/engine/vulkanaid/include',
-  'Engine/engine/render_engine/include'
+  'Engine/engine/render_engine/include',
+  'Engine/tools',
 )
 
 # Dependencies
@@ -70,6 +71,7 @@ sources = [
   'Engine/engine/render_engine/src/create_commandbuffer.cpp',
   'Engine/engine/render_engine/src/draw_frame.cpp',
   'Engine/engine/render_engine/src/create_sync_objects.cpp',
+  'Engine/engine/render_engine/src/swapchain_recreation.cpp',
 ]
 
 # Executable

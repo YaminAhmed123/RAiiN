@@ -43,23 +43,6 @@ static void initVulkanWithEngineMembers(
 }
 
 
-
-static void destroyVkSwapChainImageViewsVector(std::vector<VkImageView>& swapChainImageViews, VkDevice& device)
-{
-    for(auto imageView : swapChainImageViews)
-    {
-        vkDestroyImageView(device, imageView, nullptr);
-    }
-}
-
-static void destroyVkFramebuffersVector(std::vector<VkFramebuffer>& swapChainFramebuffers, VkDevice& device)
-{
-    for(auto framebuffer : swapChainFramebuffers)
-    {
-        vkDestroyFramebuffer(device, framebuffer, nullptr);
-    }
-}
-
 // valid implementations
 void RenderEngine::run() 
 {
@@ -69,13 +52,22 @@ void RenderEngine::run()
     RenderEngine::cleanup();
 }
 
+static void framebufferResizeCallback(GLFWwindow* window, int width, int height) 
+{
+    auto app = reinterpret_cast<RenderEngine*>(glfwGetWindowUserPointer(window));
+    app->framebufferResized = true;
+}
+
 void RenderEngine::initWindow() 
 {
     glfwInit();
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
     RenderEngine::window = glfwCreateWindow(WIDTH, HEIGHT, "HATE ENGINE", nullptr, nullptr);
+    glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
+    glfwSetWindowUserPointer(window, this);
 }
+
 
 void RenderEngine::initVulkan() 
 {
@@ -119,11 +111,12 @@ void RenderEngine::cleanup()
         vulkanaid::destroyDebugMessenger(RenderEngine::instance, RenderEngine::debugMessenger);
     }
 
+    cleanUpSwapChain();
+
     vkDestroyShaderModule(device, RenderEngine::fragShaderModule, nullptr);
     vkDestroyShaderModule(device, RenderEngine::vertShaderModule, nullptr);
     vkDestroyPipeline(device, RenderEngine::graphicsPipeline, nullptr);
     vkDestroyPipelineLayout(device, RenderEngine::pipelineLayout, nullptr);
-    destroyVkFramebuffersVector(RenderEngine::swapChainFramebuffers, RenderEngine::device);
     vkDestroyRenderPass(device, RenderEngine::renderPass, nullptr);
 
     vkDestroyCommandPool(RenderEngine::device, RenderEngine::commandPool, nullptr);
@@ -134,8 +127,6 @@ void RenderEngine::cleanup()
         vkDestroyFence(device, inFlightFences[i], nullptr);
     }
     
-    destroyVkSwapChainImageViewsVector(RenderEngine::swapChainImagesViews, RenderEngine::device);
-    vkDestroySwapchainKHR(RenderEngine::device, RenderEngine::swapChain, nullptr);
     vkDestroyDevice(RenderEngine::device, nullptr);
     vkDestroySurfaceKHR(RenderEngine::instance, RenderEngine::surface, nullptr);
     vkDestroyInstance(RenderEngine::instance, nullptr);

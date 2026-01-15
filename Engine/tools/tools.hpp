@@ -64,6 +64,12 @@ namespace tools{
             }
         }
     };
+
+
+    //
+    
+    
+    #define LOG(msg) std::cout << "\033[34m" << "[LOGGER]: " << msg << "\033[0m" << std::endl;
 }
 
 #endif

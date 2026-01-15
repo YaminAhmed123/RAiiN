@@ -34,6 +34,10 @@ private:
     const uint32_t MAX_FRAMES_IN_FLIGHT = 2;
     int currentFrame = 0;
 
+    // Helper functions that are meant to be used for certain TUs only
+    // dont use them outside render_engine src files
+    void checkForSwapChainRecreation(VkResult result, int mode); // mode = 0 check for Image acquisition, mode = 1 check for presentation
+
 public:
     GLFWwindow* window;
 
@@ -70,6 +74,9 @@ public:
     std::vector<VkFence> inFlightFences;
 
 
+    // swapchain recreation members
+    bool framebufferResized = false;
+
 
     RenderEngine();
     ~RenderEngine();
@@ -84,6 +91,8 @@ public:
     void recordCommandBuffer(VkCommandBuffer& commandBuffer, uint32_t imageIndex);
     void createSyncObjects();
     void drawFrame();
+    void recreateSwapChain();
+    void cleanUpSwapChain();
     void mainLoop();
     void cleanup();
 };
