@@ -126,6 +126,14 @@ void RenderEngine::cleanup()
         vkDestroySemaphore(device, renderFinishedSemaphores[i], nullptr);
         vkDestroyFence(device, inFlightFences[i], nullptr);
     }
+
+    for(size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
+    {
+        for(size_t j = 0; j < swapChainImages.size(); j++)
+        {
+            vkDestroySemaphore(device, swapChainSemaphores[i].imageAvailableSemaphores[j], nullptr);
+        }
+    }
     
     vkDestroyDevice(RenderEngine::device, nullptr);
     vkDestroySurfaceKHR(RenderEngine::instance, RenderEngine::surface, nullptr);

@@ -34,6 +34,7 @@ void RenderEngine::checkForSwapChainRecreation(VkResult result, int mode)
     }
 }
 
+
 void RenderEngine::drawFrame()
 {
     LOG("Starting Draw Frame...");
@@ -59,7 +60,7 @@ void RenderEngine::drawFrame()
     submitInfo.commandBufferCount = 1;
     submitInfo.pCommandBuffers = &commandBuffers[currentFrame];
 
-    VkSemaphore signalSemaphores[] = {renderFinishedSemaphores[currentFrame]};
+    VkSemaphore signalSemaphores[] = {swapChainSemaphores[currentFrame].imageAvailableSemaphores[imageIndex]};
     submitInfo.signalSemaphoreCount = 1;
     submitInfo.pSignalSemaphores = signalSemaphores;
 
@@ -86,6 +87,7 @@ void RenderEngine::drawFrame()
     result = vkQueuePresentKHR(presentQueue, &presentInfo);
     RenderEngine::checkForSwapChainRecreation(result, 1);
 
+    vkDeviceWaitIdle(this->device);
 
     currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
 

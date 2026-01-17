@@ -5,6 +5,9 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 
+typedef struct {
+    std::vector<VkSemaphore> imageAvailableSemaphores;
+} renderFinishedImageSwapChainSemaphore;
 
 
 /*

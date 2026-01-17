@@ -20,6 +20,7 @@
 
 
 
+
 /*
 *  Copyright (c) 2025 CortexR7
 * 
@@ -31,7 +32,7 @@ class RenderEngine {
 private:
     const int WIDTH = 800;
     const int HEIGHT = 600;
-    const uint32_t MAX_FRAMES_IN_FLIGHT = 2;
+    const uint32_t MAX_FRAMES_IN_FLIGHT = 1;
     int currentFrame = 0;
 
     // Helper functions that are meant to be used for certain TUs only
@@ -71,6 +72,7 @@ public:
     // sync objects
     std::vector<VkSemaphore> imageAvailableSemaphores;
     std::vector<VkSemaphore> renderFinishedSemaphores;
+    std::vector<renderFinishedImageSwapChainSemaphore> swapChainSemaphores;
     std::vector<VkFence> inFlightFences;
 
 
