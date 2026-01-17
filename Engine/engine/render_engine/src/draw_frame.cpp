@@ -87,8 +87,6 @@ void RenderEngine::drawFrame()
     result = vkQueuePresentKHR(presentQueue, &presentInfo);
     RenderEngine::checkForSwapChainRecreation(result, 1);
 
-    vkDeviceWaitIdle(this->device);
-
     currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
 
     std::string msg =  "Frame: " + std::to_string(currentFrame) + " drawn successfully.";
