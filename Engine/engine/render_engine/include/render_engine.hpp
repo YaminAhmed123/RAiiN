@@ -32,7 +32,7 @@ class RenderEngine {
 private:
     const int WIDTH = 800;
     const int HEIGHT = 600;
-    const uint32_t MAX_FRAMES_IN_FLIGHT = 1;
+    const uint32_t MAX_FRAMES_IN_FLIGHT = 4;
     int currentFrame = 0;
 
     // Helper functions that are meant to be used for certain TUs only
