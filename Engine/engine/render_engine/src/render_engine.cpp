@@ -113,8 +113,7 @@ void RenderEngine::cleanup()
 
     cleanUpSwapChain();
 
-    vkDestroyShaderModule(device, RenderEngine::fragShaderModule, nullptr);
-    vkDestroyShaderModule(device, RenderEngine::vertShaderModule, nullptr);
+    
     vkDestroyPipeline(device, RenderEngine::graphicsPipeline, nullptr);
     vkDestroyPipelineLayout(device, RenderEngine::pipelineLayout, nullptr);
     vkDestroyRenderPass(device, RenderEngine::renderPass, nullptr);

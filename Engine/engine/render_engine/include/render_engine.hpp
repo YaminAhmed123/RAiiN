@@ -62,8 +62,6 @@ public:
     VkPipeline graphicsPipeline;
     VkRenderPass renderPass;
     VkPipelineLayout pipelineLayout;
-    VkShaderModule vertShaderModule;
-    VkShaderModule fragShaderModule;
 
     // commnads
     VkCommandPool commandPool;
