@@ -15,7 +15,7 @@ compiler_args = []
 cpp = meson.get_compiler('cpp')
 
 if cpp.get_id() == 'msvc'
-  compiler_args += ['/Oi', '/Ot', '/wd4100', '/wd4189']
+  compiler_args += ['/MT', '/Oi', '/Ot', '/wd4100', '/wd4189']
 elif cpp.get_id() == 'clang'
   compiler_args += ['-march=native', '-O3', '-Wno-unused-parameter']
 else # GCC
