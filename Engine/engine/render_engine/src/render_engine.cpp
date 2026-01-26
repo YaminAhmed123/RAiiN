@@ -90,6 +90,7 @@ void RenderEngine::initVulkan()
     RenderEngine::createGraphicsPipeline();
     RenderEngine::createFramebuffers();
     RenderEngine::createCommandPool();
+    RenderEngine::createVertexBuffer();
     RenderEngine::createCommandBuffer();
     RenderEngine::createSyncObjects();
 }
@@ -134,6 +135,7 @@ void RenderEngine::cleanup()
         }
     }
     
+    vkDestroyBuffer(device, vertexBuffer, nullptr);
     vkDestroyDevice(RenderEngine::device, nullptr);
     vkDestroySurfaceKHR(RenderEngine::instance, RenderEngine::surface, nullptr);
     vkDestroyInstance(RenderEngine::instance, nullptr);

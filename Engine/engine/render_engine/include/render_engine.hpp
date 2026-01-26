@@ -74,6 +74,9 @@ public:
     std::vector<VkFence> inFlightFences;
 
 
+    // Vulkan Buffer
+    VkBuffer vertexBuffer;
+
     // swapchain recreation members
     bool framebufferResized = false;
 
@@ -90,6 +93,7 @@ public:
     void createCommandBuffer();
     void recordCommandBuffer(VkCommandBuffer& commandBuffer, uint32_t imageIndex);
     void createSyncObjects();
+    void createVertexBuffer();
     void drawFrame();
     void recreateSwapChain();
     void cleanUpSwapChain();
