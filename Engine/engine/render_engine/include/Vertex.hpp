@@ -5,6 +5,19 @@
 #include <vulkan/vulkan.h>
 #include <array>
 
+/*
+*  Copyright (c) 2026 CortexR7
+*  This header defines a "Vertex" struct which models Vertex.
+*  The current engine is meant to be fed with this Vertex type only !
+*
+*  Currently this structre provides the aiding member functions
+*  that returns us the BindingDescription and AttributeDescription.
+*
+*  Please take into account that this structre exists to learn and implement the basics fro now.
+*  Changes will come soon and break the engien structure.
+*  In fututre the structre will be much more "dynamic".
+*/
+
 struct Vertex{
     glm::vec2 position;
     glm::vec3 color;
