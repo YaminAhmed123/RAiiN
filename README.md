@@ -1,4 +1,4 @@
-# HATE Engine  ![Vulkan](https://img.shields.io/badge/Vulkan-API-orange?logo=vulkan&style=flat-square)
+# RAiiD Engine  ![Vulkan](https://img.shields.io/badge/Vulkan-API-orange?logo=vulkan&style=flat-square)
 
 ## Notes
 - This engine is still in alpha and probably will stay in alpha for a long time.
