@@ -76,6 +76,7 @@ public:
 
     // Vulkan Buffer
     VkBuffer vertexBuffer;
+    VkDeviceMemory vertexBufferMemory;
 
     // swapchain recreation members
     bool framebufferResized = false;
@@ -99,6 +100,9 @@ public:
     void cleanUpSwapChain();
     void mainLoop();
     void cleanup();
+
+    // Helper functions 
+    uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 };
 
 #endif

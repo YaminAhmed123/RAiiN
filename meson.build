@@ -72,6 +72,7 @@ sources = [
   'Engine/engine/render_engine/src/draw_frame.cpp',
   'Engine/engine/render_engine/src/create_sync_objects.cpp',
   'Engine/engine/render_engine/src/swapchain_recreation.cpp',
+  'Engine/engine/render_engine/src/create_vertex_buffer.cpp',
 ]
 
 # Executable

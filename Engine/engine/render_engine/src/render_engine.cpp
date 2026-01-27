@@ -136,6 +136,7 @@ void RenderEngine::cleanup()
     }
     
     vkDestroyBuffer(device, vertexBuffer, nullptr);
+    vkFreeMemory(device, vertexBufferMemory, nullptr);
     vkDestroyDevice(RenderEngine::device, nullptr);
     vkDestroySurfaceKHR(RenderEngine::instance, RenderEngine::surface, nullptr);
     vkDestroyInstance(RenderEngine::instance, nullptr);

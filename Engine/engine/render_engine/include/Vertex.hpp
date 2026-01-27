@@ -5,7 +5,7 @@
 #include <vulkan/vulkan.h>
 #include <array>
 
-typedef struct{
+struct Vertex{
     glm::vec2 position;
     glm::vec3 color;
 
@@ -34,6 +34,6 @@ typedef struct{
 
         return attributeDescriptions;
     }
-} Vertex;
+};
 
 #endif

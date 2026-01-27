@@ -45,6 +45,11 @@ void RenderEngine::recordCommandBuffer(VkCommandBuffer& commandBuffer, uint32_t 
     vkCmdBeginRenderPass(commandBuffer, &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
     vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, RenderEngine::graphicsPipeline);
 
+    // BINDING THE VERTEX BUFFER
+    VkBuffer vertexBuffers[] = {this->vertexBuffer};
+    VkDeviceSize offsets[] = {0};
+    vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
+
     // configuring dynamic states like viewport and scissor now
     VkViewport viewport{};
     viewport.x = 0.0f;
@@ -61,8 +66,8 @@ void RenderEngine::recordCommandBuffer(VkCommandBuffer& commandBuffer, uint32_t 
     vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
 
 
-    vkCmdDraw(commandBuffer, 3, 1, 0, 0);
-    vkCmdEndRenderPass(commandBuffer);
+    vkCmdDraw(commandBuffer, 3, 1, 0, 0);       // THE 3 HERE CAN BE LIKE THAT BECAUSE THE DUMMY DATA HAS 3 VERTICES
+    vkCmdEndRenderPass(commandBuffer);          // FOR MORE INFO ON THAT LOOK AT THE create_vertex_buffer.cpp FILE
 
     if (vkEndCommandBuffer(commandBuffer) != VK_SUCCESS) 
     {
