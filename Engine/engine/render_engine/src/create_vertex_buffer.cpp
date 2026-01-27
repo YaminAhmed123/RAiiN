@@ -1,6 +1,7 @@
 #include <render_engine.hpp>
 #include <iostream>
 #include <Vertex.hpp>
+#include <cstring>
 
 // STATIC HELPER FUNCTIONS
 uint32_t RenderEngine::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties)
