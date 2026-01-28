@@ -1,9 +1,9 @@
 project(
   'mesontest',
   'cpp',
-  meson_version : '>= 1.3.0',
-  version : '0.1',
-  default_options : [
+  meson_version: '>= 1.3.0',
+  version: '0.1',
+  default_options: [
     'cpp_std=c++20',
     'buildtype=release',
     'warning_level=3',
@@ -18,7 +18,8 @@ if cpp.get_id() == 'msvc'
   compiler_args += ['/Oi', '/Ot', '/wd4100', '/wd4189']
 elif cpp.get_id() == 'clang'
   compiler_args += ['-march=native', '-O3', '-Wno-unused-parameter']
-else # GCC
+else
+  # GCC
   compiler_args += ['-march=native', '-O3', '-Wno-unused-parameter']
 endif
 
@@ -37,11 +38,11 @@ incdir = include_directories(
 if host_machine.system() == 'windows'
   glfw_dep = declare_dependency(
     include_directories: incdir,
-    link_args: [meson.project_source_root() / 'lib/glfw3_mt.lib']
+    link_args: [meson.project_source_root() / 'lib/glfw3_mt.lib'],
   )
   vulkan_dep = declare_dependency(
     include_directories: incdir,
-    link_args: [meson.project_source_root() / 'lib/vulkan-1.lib']
+    link_args: [meson.project_source_root() / 'lib/vulkan-1.lib'],
   )
 else
   # On Linux, use pkg-config to find glfw3 and Vulkan
@@ -77,7 +78,7 @@ sources = [
 
 # Executable
 exe = executable(
-  'HATE',
+  'RAiiN',
   sources,
   include_directories: incdir,
   dependencies: dependencies,
