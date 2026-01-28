@@ -3,13 +3,6 @@
 #include <fstream>
 #include <string>
 
-/*
-* Copyright (c) 2025 CortexR7
-*
-* This source file implements the core functionalities of the render engine
-* the engine is still in alpha stage and is under heavy development
-* Constrcutors and destructore left empty for now
-*/
 
 RenderEngine::RenderEngine() {}
 RenderEngine::~RenderEngine() {}
