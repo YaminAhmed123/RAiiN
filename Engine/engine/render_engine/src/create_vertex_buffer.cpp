@@ -35,8 +35,8 @@ Vertex vertecies[VERTEX_DATA_SIZE];
 void RenderEngine::createVertexBuffer()
 {
     // INIT THE DUMMY DATA HERE:
-    vertecies[0] = {{0.0f, -0.5f}, {1.0f, 0.3f, 1.0f}}; // bottom vertex, red color
-    vertecies[1] = {{0.5f, 0.5f}, {0.0f, 1.0f, 0.5f}};  // top right vertex, green color
+    vertecies[0] = {{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}}; // bottom vertex, red color
+    vertecies[1] = {{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}};  // top right vertex, green color
     vertecies[2] = {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}; // top left vertex, blue color
     // END OF DUMMY DATA INIT
 
