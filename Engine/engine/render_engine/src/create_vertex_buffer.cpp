@@ -1,9 +1,11 @@
+#include "vulkan/vulkan_core.h"
 #include <render_engine.hpp>
 #include <iostream>
 #include <Vertex.hpp>
 #include <cstring>
 
-// STATIC HELPER FUNCTIONS
+// HELPER FUNCTIONS
+// FOR MORE INFO LOOK AT THE RENDER_ENGINE HEADER
 uint32_t RenderEngine::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties)
 {
     VkPhysicalDeviceMemoryProperties memProperties;
@@ -20,13 +22,40 @@ uint32_t RenderEngine::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags
     throw std::runtime_error("failed to find suitable memory type!");
 }
 
+void RenderEngine::createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory) {
+    VkBufferCreateInfo bufferInfo{};
+    bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+    bufferInfo.size = size;
+    bufferInfo.usage = usage;
+    bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+    if (vkCreateBuffer(this->device, &bufferInfo, nullptr, &buffer) != VK_SUCCESS)
+    {
+        throw std::runtime_error("failed to create buffer!");
+    }
+
+    VkMemoryRequirements memRequirements;
+    vkGetBufferMemoryRequirements(this->device, buffer, &memRequirements);
+
+    VkMemoryAllocateInfo allocInfo{};
+    allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+    allocInfo.allocationSize = memRequirements.size;
+    allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
+
+    if (vkAllocateMemory(this->device, &allocInfo, nullptr, &bufferMemory) != VK_SUCCESS)
+    {
+        throw std::runtime_error("failed to allocate buffer memory!");
+    }
+
+    vkBindBufferMemory(this->device, buffer, bufferMemory, 0);
+}
 
 
 
 /*
 * WARNING: THIS DATA IS JUST A DUMMY
 * IN FUTURE VERTEX DATA LIKE THIS WILL BE LOADED FROM 3D MODEL FILES
-*/ 
+*/
 
 // DUMMY DATA
 #define VERTEX_DATA_SIZE 3
@@ -41,38 +70,18 @@ void RenderEngine::createVertexBuffer()
     // END OF DUMMY DATA INIT
 
     // Create Vertex Buffer
-    VkBufferCreateInfo bufferInfo{};
-    bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-    bufferInfo.size = sizeof(Vertex) * VERTEX_DATA_SIZE; // size of 3 vertices
-    bufferInfo.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
-    bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-
-    if (vkCreateBuffer(device, &bufferInfo, nullptr, &this->vertexBuffer) != VK_SUCCESS) 
-    {
-        throw std::runtime_error("failed to create vertex buffer!");
-    }
-
-    
-    
-    VkMemoryRequirements memRequirements;
-    vkGetBufferMemoryRequirements(device, this->vertexBuffer, &memRequirements);
-
-    VkMemoryAllocateInfo allocInfo{};
-    allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-    allocInfo.allocationSize = memRequirements.size;
-    allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-
-    if (vkAllocateMemory(device, &allocInfo, nullptr, &vertexBufferMemory) != VK_SUCCESS) 
-    {
-        throw std::runtime_error("failed to allocate vertex buffer memory!");
-    }
-
-    vkBindBufferMemory(this->device, this->vertexBuffer, this->vertexBufferMemory, 0);
+    createBuffer(
+        sizeof(Vertex) * VERTEX_DATA_SIZE,
+        VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
+        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+        this->vertexBuffer,
+        this->vertexBufferMemory
+    );
 
 
     // COPY VERTEX DATA TO BUFFER MEMORY
     void* data;
-    vkMapMemory(this->device, this->vertexBufferMemory, 0, bufferInfo.size, 0, &data);
-    memcpy(data, vertecies, (size_t)bufferInfo.size);
+    vkMapMemory(this->device, this->vertexBufferMemory, 0, sizeof(Vertex) * VERTEX_DATA_SIZE, 0, &data);
+    memcpy(data, vertecies, (size_t)sizeof(Vertex) * VERTEX_DATA_SIZE);
     vkUnmapMemory(this->device, this->vertexBufferMemory);
 }
