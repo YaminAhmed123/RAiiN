@@ -5,9 +5,9 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 
-typedef struct {
+struct renderFinishedImageSwapChainSemaphore{
     std::vector<VkSemaphore> imageAvailableSemaphores;
-} renderFinishedImageSwapChainSemaphore;
+};
 
 
 /*
@@ -16,7 +16,7 @@ typedef struct {
 * This header defines a set of functions to aid in Vulkan development
 * the functions that are in the raii namspace are based on RAII principles
 * for all other functions it is advised to be dealt with care.
-*/ 
+*/
 
 namespace vulkanaid{
 
@@ -39,4 +39,4 @@ namespace vulkanaid{
     void destroyDebugMessenger(VkInstance& instance, VkDebugUtilsMessengerEXT& debugMessenger);
 }
 
-#endif 
+#endif
