@@ -132,7 +132,7 @@ target_include_directories(
         ${PROJECT_SOURCE_DIR}/Dependencies/slang/external/vulkan/include
 )
 target_link_libraries(LIBELLE
-    PRIVATE
+    PUBLIC
         ETL
         SLANG2SPRIV
         glfw
