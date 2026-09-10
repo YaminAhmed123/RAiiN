@@ -15,6 +15,7 @@ void RENDER_ENGINE2::INIT_ENGINE()
     DEBUG_LOG("Vulkan logical device initialized!");
     VK_SWAPCHAIN.INIT(MAIN_WINDOW, VKP_DEVICE, VKL_DEVICE);
     DEBUG_LOG("Vulkan swapchain initialized!");
+    VK_BUFFER.INIT((void*)RE2_DUMMY_VERTEX_DATA.data(), static_cast<size_t>(sizeof(RE2_DUMMY_VERTEX_DATA[0]) * RE2_DUMMY_VERTEX_DATA.size()), this->VKL_DEVICE, this->VKP_DEVICE);
     VK_PIPELINE.INIT(VKL_DEVICE, VK_SWAPCHAIN);
     DEBUG_LOG("Vulkan pipeline initialized!");
     VK_CMD.INIT(VKP_DEVICE, MAIN_WINDOW, VKL_DEVICE, FRAMES_IN_FLIGHT);
@@ -58,7 +59,8 @@ void RENDER_ENGINE2::DRAW_FRAME(void)
         this->VK_CMD.CMD_BUFFERS_GRAPHICS.DATA()[CURRENT_FRAME],
         imageIndex,
         this->VK_SWAPCHAIN,
-        this->VK_PIPELINE
+        this->VK_PIPELINE,
+        this->VK_BUFFER
     );
 
     VkSubmitInfo submitInfo{};
@@ -101,6 +103,7 @@ void RENDER_ENGINE2::FREE_ENGINE()
     VK_CMD.FREE(VKL_DEVICE);
     VK_SYNC.FREE(VKL_DEVICE);
     VK_PIPELINE.FREE(VKL_DEVICE);
+    VK_BUFFER.FREE();
     VK_SWAPCHAIN.FREE();
     MAIN_WINDOW.FREE(VK_INSTANCE);
     VKL_DEVICE.FREE();

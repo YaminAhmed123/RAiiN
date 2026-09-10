@@ -1,5 +1,6 @@
 #include <VULKAN_PIPELINE.hpp>
-
+#include <RE2_VERTEX.hpp>
+#include <cstdint>
 
 static std::vector<VkDynamicState> dynamicStates = {
     VK_DYNAMIC_STATE_VIEWPORT,
@@ -42,7 +43,7 @@ static void POPULATE_VERTEX_SHADER_STAGE_CREATE_INFO(VkPipelineShaderStageCreate
     vertShaderStageInfo.stage = VK_SHADER_STAGE_VERTEX_BIT;
     vertShaderStageInfo.module = vertexShaderModule;
     vertShaderStageInfo.pName = "main";
-} 
+}
 
 static void POPULATE_FRAGMENT_SHADER_STAGE_CREATE_INFO(VkPipelineShaderStageCreateInfo& fragShaderStageInfo, VkShaderModule& fragmentShaderModule)
 {
@@ -50,7 +51,7 @@ static void POPULATE_FRAGMENT_SHADER_STAGE_CREATE_INFO(VkPipelineShaderStageCrea
     fragShaderStageInfo.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
     fragShaderStageInfo.module = fragmentShaderModule;
     fragShaderStageInfo.pName = "main";
-} 
+}
 
 static void POPULATE_DYNAMIC_STATE_CREATE_INFO(VkPipelineDynamicStateCreateInfo& dynamicState)
 {
@@ -59,13 +60,13 @@ static void POPULATE_DYNAMIC_STATE_CREATE_INFO(VkPipelineDynamicStateCreateInfo&
     dynamicState.pDynamicStates = dynamicStates.data();
 }
 
-static void POPULATE_VERTEX_INPUT_STATE_CREATE_INFO(VkPipelineVertexInputStateCreateInfo& vertexInputInfo)
+static void POPULATE_VERTEX_INPUT_STATE_CREATE_INFO(VkPipelineVertexInputStateCreateInfo& vertexInputInfo, RE2_V2D_I &vertexInputDesc, RE2_V2D_A& attributesInfoArray)
 {
     vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-    vertexInputInfo.vertexBindingDescriptionCount = 0;
-    vertexInputInfo.pVertexBindingDescriptions = nullptr; // Optional
-    vertexInputInfo.vertexAttributeDescriptionCount = 0;
-    vertexInputInfo.pVertexAttributeDescriptions = nullptr; // Optional
+    vertexInputInfo.vertexBindingDescriptionCount = 1;
+    vertexInputInfo.pVertexBindingDescriptions = &vertexInputDesc; // Optional
+    vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributesInfoArray.size());
+    vertexInputInfo.pVertexAttributeDescriptions = attributesInfoArray.data(); // Optional
 }
 
 static void POPULATE_INPUT_ASSEMBLY_STATE_CREATE_INFO(VkPipelineInputAssemblyStateCreateInfo& inputAssembly)
@@ -190,7 +191,9 @@ void VULKAN_PIPELINE::INIT_PIPELINE(VULKAN_LOGICAL_DEVICE& LOGICAL_DEVICE, VULKA
     DEBUG_LOG("DYNAMIC STATES CREATE INFO HAS BEEN POPULATED SUCCESSFULLY !!!");
 
     VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
-    POPULATE_VERTEX_INPUT_STATE_CREATE_INFO(vertexInputInfo);
+    RE2_V2D_A attributesInfoArray = RE2_VERTEX2D::GET_VERTEX_ATTRIBUTE_DESC_VK();
+    RE2_V2D_I vertexInputDesc = RE2_VERTEX2D::GET_VERTEX_INPUT_BINDING_DESC_VK();
+    POPULATE_VERTEX_INPUT_STATE_CREATE_INFO(vertexInputInfo, vertexInputDesc, attributesInfoArray);
     DEBUG_LOG("VERTEX INPUT STATE CREATE INFO HAS BEEN POPULATED SUCCESSFULLY !!!");
 
     VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
@@ -229,7 +232,7 @@ void VULKAN_PIPELINE::INIT_PIPELINE(VULKAN_LOGICAL_DEVICE& LOGICAL_DEVICE, VULKA
     POPULATE_PIPELINE_LAYOUT_CREATE_INFO(pipelineLayoutInfo);
     DEBUG_LOG("PIPELINE LAYOUT CREATE INFO HAS BEEN POPULATED SUCCESSFULLY !!!");
 
-    if (vkCreatePipelineLayout(LOGICAL_DEVICE.GET_HANDLE_TO_VK_LOGICAL_DEVICE(), &pipelineLayoutInfo, nullptr, &PIPELINE_LAYOUT) != VK_SUCCESS) 
+    if (vkCreatePipelineLayout(LOGICAL_DEVICE.GET_HANDLE_TO_VK_LOGICAL_DEVICE(), &pipelineLayoutInfo, nullptr, &PIPELINE_LAYOUT) != VK_SUCCESS)
     {
         DEBUG_LOG("FAILED TO CREATE PIPELINE LAYOUT !!!");
         throw std::runtime_error("failed to create pipeline layout!");
@@ -239,7 +242,7 @@ void VULKAN_PIPELINE::INIT_PIPELINE(VULKAN_LOGICAL_DEVICE& LOGICAL_DEVICE, VULKA
 
 
 
-    // GRAPHICS PIPELINE CREATION 
+    // GRAPHICS PIPELINE CREATION
     VkFormat swapChainImageFormat = SWAPCHAIN.GET_SWAPCHAIN_IMAGE_FORMAT();
     VkPipelineRenderingCreateInfo pipelineRenderingInfo{};
     pipelineRenderingInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_RENDERING_CREATE_INFO;

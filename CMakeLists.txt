@@ -13,6 +13,16 @@ option(OPTIMIZATION "Enables compiler optimizations" OFF)
 
 
 # defining dependencies
+include(FetchContent)
+FetchContent_Declare(
+	glm
+	GIT_REPOSITORY	https://github.com/g-truc/glm.git
+	GIT_TAG 	0af55ccecd98d4e5a8d1fad7de25ba429d60e863 #refs/tags/1.0.1
+)
+FetchContent_MakeAvailable(glm)
+
+
+
 set(GLFW_LIBRARY_TYPE STATIC CACHE STRING "" FORCE)
 add_subdirectory(${PROJECT_SOURCE_DIR}/Dependencies/glfw)
 
@@ -91,10 +101,14 @@ target_sources(
         ${PROJECT_SOURCE_DIR}/Engine/render_engine/src/VULKAN_INSTANCE.cpp
         ${PROJECT_SOURCE_DIR}/Engine/render_engine/src/VULKAN_CMD.cpp
         ${PROJECT_SOURCE_DIR}/Engine/render_engine/src/RENDER_ENGINE2.cpp
+        ${PROJECT_SOURCE_DIR}/Engine/render_engine/utility/src/RE2_VERTEX2D.cpp
+        ${PROJECT_SOURCE_DIR}/Engine/render_engine/utility/src/RE2_VK_BUFFER.cpp
 
         PUBLIC
         FILE_SET HEADERS
-        BASE_DIRS ${PROJECT_SOURCE_DIR}/Engine/render_engine/include
+        BASE_DIRS
+        ${PROJECT_SOURCE_DIR}/Engine/render_engine/include
+        ${PROJECT_SOURCE_DIR}/Engine/render_engine/utility/include
         FILES
         ${PROJECT_SOURCE_DIR}/Engine/render_engine/include/GLFW_PREPROCESSOR.hpp
         ${PROJECT_SOURCE_DIR}/Engine/render_engine/include/WINDOW.hpp
@@ -107,6 +121,8 @@ target_sources(
         ${PROJECT_SOURCE_DIR}/Engine/render_engine/include/VULKAN_INSTANCE.hpp
         ${PROJECT_SOURCE_DIR}/Engine/render_engine/include/VULKAN_CMD.hpp
         ${PROJECT_SOURCE_DIR}/Engine/render_engine/include/RENDER_ENGINE2.hpp
+        ${PROJECT_SOURCE_DIR}/Engine/render_engine/utility/include/RE2_VERTEX.hpp
+        ${PROJECT_SOURCE_DIR}/Engine/render_engine/utility/include/RE2_VK_BUFFER.hpp
 )
 target_include_directories(
     LIBELLE
@@ -121,9 +137,8 @@ target_link_libraries(LIBELLE
         SLANG2SPRIV
         glfw
         slang
+        glm::glm
 )
-
-
 
 
 # building actual executable

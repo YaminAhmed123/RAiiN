@@ -27,7 +27,7 @@ void VULKAN_CMD::INIT(VULKAN_PHYSICAL_DEVICE& PH_DEVICE, WINDOW& WIN, VULKAN_LOG
     allocInfo.commandBufferCount = (uint32_t)this->CMD_BUFFERS_GRAPHICS.SIZE();
 
 
-    
+
     if (vkAllocateCommandBuffers(LG_DEVICE.GET_HANDLE_TO_VK_LOGICAL_DEVICE(), &allocInfo, CMD_BUFFERS_GRAPHICS.DATA()) != VK_SUCCESS) {
         DEBUG_LOG("FAILED TO ALLOCATE CMD_BUFFERS !!!");
         throw std::runtime_error("failed to allocate command buffers!");
@@ -36,7 +36,7 @@ void VULKAN_CMD::INIT(VULKAN_PHYSICAL_DEVICE& PH_DEVICE, WINDOW& WIN, VULKAN_LOG
     }
 }
 
-void VULKAN_CMD::RECORD_CMD_BUFFER_GRAPHICS(VkCommandBuffer& CMD_BUFFER, uint32_t imageIndex, VULKAN_SWAPCHAIN& SWAPCHAIN,  VULKAN_PIPELINE& PIPELINE)
+void VULKAN_CMD::RECORD_CMD_BUFFER_GRAPHICS(VkCommandBuffer& CMD_BUFFER, uint32_t imageIndex, VULKAN_SWAPCHAIN& SWAPCHAIN,  VULKAN_PIPELINE& PIPELINE, RE2_VK_BUFFER& VK_BUFFER)
 {
     vkResetCommandBuffer(CMD_BUFFER, 0);
 
@@ -69,7 +69,7 @@ void VULKAN_CMD::RECORD_CMD_BUFFER_GRAPHICS(VkCommandBuffer& CMD_BUFFER, uint32_
 
     vkCmdPipelineBarrier2(CMD_BUFFER, &depInfo);
 
-    
+
     VkRenderingAttachmentInfo colorAttachment{};
     colorAttachment.sType       = VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO;
     colorAttachment.imageView   = SWAPCHAIN.SW_CHAIN_IMAGE_VIEWS[imageIndex];
@@ -104,6 +104,9 @@ void VULKAN_CMD::RECORD_CMD_BUFFER_GRAPHICS(VkCommandBuffer& CMD_BUFFER, uint32_
     vkCmdSetScissor(CMD_BUFFER, 0, 1, &scissor);
 
     vkCmdBindPipeline(CMD_BUFFER, VK_PIPELINE_BIND_POINT_GRAPHICS, PIPELINE.GRAPHICS_PIPELINE);
+    VkBuffer VK_BUFFERS[] = {VK_BUFFER.VERTEX_BUFFER};
+    VkDeviceSize OFFSETS[] = {0};
+    vkCmdBindVertexBuffers(CMD_BUFFER, 0, 1, VK_BUFFERS, OFFSETS);
     vkCmdDraw(CMD_BUFFER, 3, 1, 0, 0);
 
     vkCmdEndRendering(CMD_BUFFER);
@@ -135,4 +138,4 @@ void VULKAN_CMD::RECORD_CMD_BUFFER_GRAPHICS(VkCommandBuffer& CMD_BUFFER, uint32_
 void VULKAN_CMD::FREE(VULKAN_LOGICAL_DEVICE& LG_DEVICE)
 {
     vkDestroyCommandPool(LG_DEVICE.GET_HANDLE_TO_VK_LOGICAL_DEVICE(), this->CMD_POOL_GRAPHICS, nullptr);
-}   
+}
