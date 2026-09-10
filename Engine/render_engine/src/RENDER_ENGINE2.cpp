@@ -11,6 +11,7 @@ void RENDER_ENGINE2::INIT_ENGINE()
     DEBUG_LOG("Main window initialized!");
     VKP_DEVICE.INIT_DEVICE(this->MAIN_WINDOW, this->VK_INSTANCE);
     DEBUG_LOG("Vulkan physical device initialized!");
+    VKP_DEVICE.META_DATA.PRINT_META_INFO_DBG();
     VKL_DEVICE.INIT(this->VKP_DEVICE, MAIN_WINDOW, this->deviceExtensions, this->validationLayers, false); // ! WARNING ! need to figure out why thE "false" is wrong later
     DEBUG_LOG("Vulkan logical device initialized!");
     VK_SWAPCHAIN.INIT(MAIN_WINDOW, VKP_DEVICE, VKL_DEVICE);
